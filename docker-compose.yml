@@ -1,12 +1,12 @@
 version: '1'
 services:
-  client:
+  schedule:
     build:
       context: .
       dockerfile: Dockerfile
     container_name: schedule-client
     ports:
-      - '5555:80'
+      - '3003:3003'
     volumes:
       - .:/app
       - /app/node_modules

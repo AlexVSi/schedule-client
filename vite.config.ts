@@ -5,7 +5,18 @@ import path from 'path'
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: '/',
   plugins: [react(), tsconfigPaths()],
+  preview: {
+    port: 3003,
+    strictPort: true
+  },
+  server: {
+    port: 3003,
+    strictPort: true,
+    host: true,
+    origin: 'http://0.0.0.0:3003'
+  },
   resolve: {
     alias: {
       '@app': path.resolve('src/app'),
