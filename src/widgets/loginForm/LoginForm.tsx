@@ -14,13 +14,14 @@ export const LoginForm = observer(() => {
         setError('');
 
         const success = authStore.login(email, password);
+        console.log(success)
         if (!success) {
             setError('Неверный email или пароль');
         }
     };
 
     return (
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form action='' onSubmit={handleSubmit} className="space-y-4">
             <div>
                 <label className="block text-sm font-medium text-gray-700">Email</label>
                 <input

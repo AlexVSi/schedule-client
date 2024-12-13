@@ -6,6 +6,7 @@ import { AuthResponse } from "@entities/auth/models/AuthResponse";
 import { jwtDecode } from "jwt-decode";
 
 export default class AuthStore {
+    AUTH_URL = import.meta.env.VITE_AUTH_URL
     user = {} as IUserLogin
     isAuth: boolean = false
     isLoading: boolean = false
@@ -71,7 +72,8 @@ export default class AuthStore {
     async checkAuth() {
         try {
             this.setLoading(true)
-            const response = await axios.get<AuthResponse>('http://127.0.0.1:8888/api/auth/refresh', { withCredentials: true })
+            const response = await axios.get<AuthResponse>(`${this.AUTH_URL}refresh`, { withCredentials: true })
+            console.log(`${this.AUTH_URL}refresh`)
             const token = response.data.accessToken
             const tokenDecode = jwtDecode<IUserLogin>(token)
             localStorage.setItem('token', token)

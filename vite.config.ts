@@ -3,7 +3,6 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import path from 'path'
 
-// https://vitejs.dev/config/
 export default defineConfig({
   base: '/',
   plugins: [react(), tsconfigPaths()],
@@ -15,7 +14,7 @@ export default defineConfig({
     port: 3003,
     strictPort: true,
     host: true,
-    origin: 'http://0.0.0.0:3003'
+    origin: 'http://localhost:3003'
   },
   resolve: {
     alias: {

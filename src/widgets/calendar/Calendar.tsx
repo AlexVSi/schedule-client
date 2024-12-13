@@ -79,10 +79,10 @@ export const Calendar: FC<CalendarProps> = observer(({ group, groupPurposes }) =
         <>
             <table className="table-auto w-full border-collapse border border-gray-300">
                 <thead>
-                    <tr>
+                    <tr className='bg-gray-50 p-4'>
                         <th className="border border-gray-300 px-4 py-2">№ пары</th>
                         {days.map((slot) => (
-                            <th key={slot.id} className="border border-gray-300 px-4 py-2">
+                            <th key={slot.id} className="font-semibold text-center">
                                 {/* {days.find(d => d.id === slot.daysOfWeek)?.day} */}
                                 {slot.day}
                             </th>
@@ -92,17 +92,19 @@ export const Calendar: FC<CalendarProps> = observer(({ group, groupPurposes }) =
                 <tbody>
                     {Array.from({ length: days.length }).map((_, index) => (
                         <tr key={index}>
-                            <th className="border border-gray-300 px-4 py-2 text-center">
-                                {index + 1} пара
+                            <th className="bg-gray-50 p-4 border-t border-gray-200">
+                                <p className="text-center text-sm text-gray-500">{index + 1} пара</p>
                             </th>
-                            {timeSlotStore.timeSlots.filter(d => d.dayOfWeek === index + 1).map((slot) => {
+                            {timeSlotStore.timeSlots.filter(d => d.numberOfSubject === index + 1)
+                                .sort((a, b) => (a.startTime.getHours() - b.startTime.getHours())).map((slot) => {
                                 const event = purposeSubjectStore.groupPurposeSubjects.find(p => p.timeSlotId === slot.id)
                                 const startTime = new Date(slot.startTime)
                                 const endTime = new Date(slot.endTime)
                                 return (
                                     <th
                                         key={`${slot.id}-${index}`}
-                                        className="border border-gray-300 px-4 py-2 text-center cursor-pointer hover:bg-gray-100"
+                                        className={`bg-white p-2 border-t border-gray-200 min-h-[100px] cursor-pointer hover:bg-blue-50 transition-colors
+                                        ${selectedTimeSlot?.startTime && format(selectedTimeSlot?.endTime, 'yyyy-MM-dd') === currentDate ? 'bg-blue-100' : ''}`}
                                         onClick={() => console.log(slot.id, index)}
                                     >
                                         {event?.classroomId}
@@ -143,74 +145,6 @@ export const Calendar: FC<CalendarProps> = observer(({ group, groupPurposes }) =
         </>
     )
 
-
-    // return (
-    //     <>
-    //         <table className="table-auto w-full border-collapse border border-gray-300">
-    //             <thead>
-    //                 <tr>
-    //                     <th className="border border-gray-300 px-4 py-2">№ пары</th>
-    //                     {days.map((slot) => (
-    //                         <th key={slot.id} className="border border-gray-300 px-4 py-2">
-    //                             {/* {days.find(d => d.id === slot.daysOfWeek)?.day} */}
-    //                             {slot.day}
-    //                         </th>
-    //                     ))}
-    //                 </tr>
-    //             </thead>
-    //             <tbody>
-    //                 {Array.from({ length: days.length }).map((_, index) => (
-    //                     <tr key={index}>
-    //                         <th className="border border-gray-300 px-4 py-2 text-center">
-    //                             {index + 1} пара
-    //                         </th>
-    //                         {timeSlotStore.timeSlots.filter(d => d.dayOfWeek === index + 1).map((slot) => {
-    //                             const event = purposeSubjectStore.groupPurposeSubjects.find(p => p.timeSlotId === slot.id)
-    //                             const startTime = new Date(slot.startTime)
-    //                             const endTime = new Date(slot.endTime)
-    //                             return (
-    //                                 <tr
-    //                                     key={`${slot.id}-${index}`}
-    //                                     className="border border-gray-300 px-4 py-2 text-center cursor-pointer hover:bg-gray-100"
-    //                                     onClick={() => console.log(slot.id, index)}
-    //                                 >
-    //                                     {event?.classroomId}
-    //                                     {!event && group && (
-    //                                         <div className="flex items-center justify-center h-full opacity-0 hover:opacity-100 transition-opacity">
-    //                                             {`${startTime.getHours()}:${startTime.getMinutes()} – ${endTime.getHours()}:${endTime.getMinutes()}`}
-    //                                             {/* {`${dateTest}`} */}
-    //                                             <Plus className="w-6 h-6 text-blue-400" />
-    //                                         </div>
-    //                                     )}
-    //                                 </tr>
-    //                             )
-    //                         })}
-    //                     </tr>
-    //                 ))}
-    //             </tbody>
-    //         </table>
-    //         <Modal
-    //             isOpen={academicSubjectListModal}
-    //             onClose={() => setAcademicSubjectListModal(false)}
-    //             title={'Назначения'}
-    //             size='big'
-    //         >
-    //             <h2 className='font mt-3 mb-7'>Доступные пары</h2>
-    //             <CardList>
-    //                 {academicSubjectStore.groupAcademicSubjects.map((academicSubject) => {
-    //                     return (
-    //                         <AcademicSubject
-    //                             key={academicSubject.id}
-    //                             academicSubject={academicSubject}
-    //                             openPurposeForm={true}
-    //                             timeSlot={selectedTimeSlot}
-    //                         />)
-    //                 })}
-    //             </CardList>
-    //             <h2 className='mt-3 mb-7'>Недоступные пары</h2>
-    //         </Modal>
-    //     </>
-    // )
 
     // return (
     //     <>

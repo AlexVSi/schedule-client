@@ -1,4 +1,4 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { Layout } from './layout';
 import { Calendar } from '@pages/calendar';
@@ -9,11 +9,20 @@ import { Groups } from '@pages/groups/Groups';
 import { Subjects } from '@pages/subjects/Subjects';
 import { AcademicSubjects } from '@pages/academicSubjects/AcademicSubjects';
 import { Specialties } from '@pages/specialties/Specialties';
+import { Context } from 'main';
 
 const scheduleContext = createContext<string>('')
 
 const App = () => {
   const [schedule, setSchedule] = useState('')
+  const { authStore } = useContext(Context)
+
+  useEffect(() => {
+    if (localStorage.getItem('token')) {
+        authStore.checkAuth()
+    }
+}, [])
+
   return (
       <>
       <scheduleContext.Provider value={schedule}>
