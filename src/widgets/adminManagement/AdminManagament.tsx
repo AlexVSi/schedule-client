@@ -1,16 +1,17 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { observer } from 'mobx-react-lite';
-import { userStore } from '@app/stores/UserStore';
 import { Button } from '@shared/ui/Button';
 import { Pencil, Trash2 } from 'lucide-react';
+import { Context } from 'main';
 
 export const AdminManagement = observer(() => {
+  const { authStore } = useContext(Context)
   const [newAdmin, setNewAdmin] = useState({ name: '', email: '', password: '' });
   const [editingId, setEditingId] = useState<string | null>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    userStore.addUser({
+    authStore.addUser({
       ...newAdmin,
       role: 'admin',
     });
@@ -18,7 +19,7 @@ export const AdminManagement = observer(() => {
   };
 
   const handleEdit = (id: string) => {
-    const admin = userStore.users.find(u => u.id === id);
+    const admin = authStore.users.find(u => u.id === id);
     if (admin) {
       setEditingId(id);
       setNewAdmin({
@@ -32,7 +33,7 @@ export const AdminManagement = observer(() => {
   const handleUpdate = (e: React.FormEvent) => {
     e.preventDefault();
     if (editingId) {
-      userStore.updateUser(editingId, {
+      authStore.updateUser(editingId, {
         name: newAdmin.name,
         email: newAdmin.email,
       });
@@ -101,7 +102,7 @@ export const AdminManagement = observer(() => {
       <div className="space-y-4">
         <h3 className="text-lg font-medium">Список администраторов</h3>
         <div className="space-y-2">
-          {userStore.users.filter(u => u.role === 'admin').map(admin => (
+          {authStore.users.filter(u => u.role === 'admin').map(admin => (
             <div
               key={admin.id}
               className="flex items-center justify-between p-4 bg-white rounded-lg shadow"

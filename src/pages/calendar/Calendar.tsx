@@ -2,7 +2,7 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { format, startOfWeek, addDays, isToday } from 'date-fns';
 import { ru } from 'date-fns/locale';
-import { scheduleStore } from '@app/stores/ScheduleStore';
+import { scheduleStore } from '@app/stores/ScheduleStore.old';
 
 export const Calendar = observer(() => {
     const today = new Date();
@@ -24,7 +24,7 @@ export const Calendar = observer(() => {
                             {format(day, 'd MMMM', { locale: ru })}
                         </div>
                         <div className="mt-2 space-y-2">
-                            {scheduleStore.scheduleEvents
+                            {scheduleStore.purposeSubjects
                                 .filter(event =>
                                     format(event.startTime, 'yyyy-MM-dd') === format(day, 'yyyy-MM-dd')
                                 )

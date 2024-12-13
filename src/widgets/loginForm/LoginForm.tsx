@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { observer } from 'mobx-react-lite';
-import { userStore } from '@app/stores/UserStore';
 import { Button } from '@shared/ui/Button';
+import { Context } from 'main';
 
 export const LoginForm = observer(() => {
+    const { authStore } = useContext(Context)
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
@@ -12,7 +13,7 @@ export const LoginForm = observer(() => {
         e.preventDefault();
         setError('');
 
-        const success = userStore.login(email, password);
+        const success = authStore.login(email, password);
         if (!success) {
             setError('Неверный email или пароль');
         }

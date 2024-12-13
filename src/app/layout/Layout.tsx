@@ -19,7 +19,7 @@ export const Layout = () => {
                         </div>
                     </div>
                 </main>
-                <Footer />
+                {/* <Footer /> */}
             </div>
         </>
     )

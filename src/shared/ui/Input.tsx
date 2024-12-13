@@ -6,13 +6,17 @@ interface InputProps {
     value: string | number
     type: React.InputHTMLAttributes<HTMLInputElement>['type']
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+    required?: boolean
+    min?: number
+    max?: number
+    checked?: boolean
 }
 
 export const Input: FC<InputProps> = (props) => {
     return (
         <>
             {props.label && <label
-                className="block text-sm font-medium text-gray-700"
+                className="block text-l font-medium text-gray-700"
                 htmlFor={props.name}
             >
                 {props.label}

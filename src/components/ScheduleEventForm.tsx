@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { CalendarPlus } from 'lucide-react';
 import { observer } from 'mobx-react-lite';
-import { scheduleStore } from '@app/stores/ScheduleStore';
+import { scheduleStore } from '@app/stores/ScheduleStore.old';
 
 export const ScheduleEventForm = observer(() => {
   const [subjectId, setSubjectId] = useState('');

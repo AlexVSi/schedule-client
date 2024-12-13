@@ -9,9 +9,9 @@ import {
   Settings,
   Shield
 } from 'lucide-react';
-import { userStore } from '@app/stores/UserStore';
+import { userStore } from '@app/stores/AuthStore';
 import { Button } from '../shared/ui/Button';
-import { Modal } from '../features/modal/Modal';
+import { Modal } from '@features/modal/Modal';
 import { LoginForm } from './LoginForm';
 import { AdminManagement } from './AdminManagament';
 import { UserProfile } from './UserProfile';

@@ -1,0 +1,14 @@
+version: '1'
+services:
+  client:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: schedule-client
+    ports:
+      - '5555:80'
+    volumes:
+      - .:/app
+      - /app/node_modules
+    stdin_open: true
+    tty: true

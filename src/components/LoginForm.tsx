@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { observer } from 'mobx-react-lite';
-import { userStore } from '@app/stores/UserStore';
+import { userStore } from '@app/stores/AuthStore';
 import { Button } from '../shared/ui/Button';
 
 export const LoginForm = observer(() => {

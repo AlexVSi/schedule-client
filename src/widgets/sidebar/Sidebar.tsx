@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import {
   ChevronLeft,
@@ -10,17 +10,18 @@ import {
   Shield,
   User2Icon
 } from 'lucide-react';
-import { userStore } from '@app/stores/UserStore';
 import { Button } from '@shared/ui/Button';
 import { Modal } from '@features/modal/Modal';
 import { LoginForm } from '@widgets/loginForm/LoginForm';
-import { UserProfile } from 'components/UserProfile';
+import { UserProfile } from '@widgets/userProfile/UserProfile';
 import { AdminManagement } from '@widgets/adminManagement/AdminManagament';
+import { Context } from 'main';
 // import { LoginForm } from './LoginForm';
 // import { AdminManagement } from './AdminManagament';
 // import { UserProfile } from './UserProfile'
 
 export const Sidebar = observer(() => {
+  const { authStore } = useContext(Context)
   const [isExpanded, setIsExpanded] = useState(true);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showAdminModal, setShowAdminModal] = useState(false);
@@ -51,7 +52,7 @@ export const Sidebar = observer(() => {
         </button>
 
         <div className="p-4 space-y-4">
-          {userStore.currentUser ? (
+          {authStore.user.login ? (
             <>
               <div className="flex items-center space-x-3 mb-6">
                 <User2Icon />
@@ -62,8 +63,7 @@ export const Sidebar = observer(() => {
                 /> */}
                 {isExpanded && (
                   <div>
-                    <div className="font-medium">{userStore.currentUser.name}</div>
-                    <div className="text-sm text-gray-500">{userStore.currentUser.email}</div>
+                    <div className="text-sm text-gray-500">{authStore.user.login}</div>
                   </div>
                 )}
               </div>
@@ -78,17 +78,6 @@ export const Sidebar = observer(() => {
                   {isExpanded && 'Профиль'}
                 </Button>
 
-                {userStore.currentUser.role === 'admin' && (
-                  <Button
-                    variant="ghost"
-                    onClick={() => setShowAdminModal(true)}
-                    className={`w-full justify-start ${!isExpanded && 'justify-center'}`}
-                  >
-                    <Shield className="w-5 h-5 mr-3" />
-                    {isExpanded && 'Администраторы'}
-                  </Button>
-                )}
-
                 <Button
                   variant="ghost"
                   className={`w-full justify-start ${!isExpanded && 'justify-center'}`}
@@ -99,7 +88,7 @@ export const Sidebar = observer(() => {
 
                 <Button
                   variant="ghost"
-                  onClick={() => userStore.logout()}
+                  onClick={() => authStore.logout()}
                   className={`w-full justify-start ${!isExpanded && 'justify-center'}`}
                 >
                   <LogOut className="w-5 h-5 mr-3" />
@@ -128,13 +117,13 @@ export const Sidebar = observer(() => {
         <LoginForm />
       </Modal>
 
-      <Modal
+      {/* <Modal
         isOpen={showAdminModal}
         onClose={() => setShowAdminModal(false)}
         title="Управление администраторами"
       >
         <AdminManagement />
-      </Modal>
+      </Modal> */}
 
       <Modal
         isOpen={showProfileModal}

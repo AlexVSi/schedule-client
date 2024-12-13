@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Building, Pencil, Trash2 } from 'lucide-react';
 import { observer } from 'mobx-react-lite';
-import { scheduleStore } from '@app/stores/ScheduleStore';
+import { scheduleStore } from '@app/stores/ScheduleStore.old';
 import { Button } from '@shared/ui/Button';
 
 export const ClassroomForm = observer(() => {

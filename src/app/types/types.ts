@@ -1,60 +1,88 @@
-export interface Teacher {
-  id: string;
+export interface ISchedule {
+  id: number;
   name: string;
-  // subjects?: Subject[];
-  subjects: string[];
+  isPublic: string;
+  timeOfStart: Date;
 }
 
-export interface Specialty {
-  id: string;
-  code: string;
+export interface ITeacher {
+  id: number;
+  lastname: string;
+  firstname: string;
+  surname: string;
+  busyTimes: IBusyTime['id'][];
+}
+
+export interface IBusyTime {
+  id: number;
+  teacher: ITeacher['id'];
+  daysOfWeek: Date;
+  timeOfStart: Date;
+  timeOfEnd: Date;
+}
+
+export interface ISpeciality {
+  id: number;
   name: string;
 }
 
-export interface Subject {
-  id: string;
+export interface IGroup {
+  id: number;
   name: string;
-  color: string;
-  // teachers?: Teacher[];
-  teachers: string[];
+  specialityId: ISpeciality['id'];
 }
 
-export interface Classroom {
-  id: string;
-  number: string;
+export interface IClassroomType {
+  id: number;
+  name: string;
+}
+
+export interface IClassroom {
+  id: number;
+  name: string;
   capacity: number;
+  type: IClassroomType['id'];
 }
 
-export interface Group {
-  id: string;
+export interface ISubject {
+  id: number;
   name: string;
-  studentsCount: number;
+  teachers: ITeacher['id'][];
+  color: string;
 }
 
-export interface CourseAssignment {
-  id: string;
-  groupId: string;
-  subjectId: string;
-  teacherIds: string[];
-  classroomIds: string[];
-  hoursPerWeek: number;
+export interface IAcademicSubject {
+  id: number;
+  name: ISubject['id'];
+  countHoursPerWeek: number;
+  groupId: IGroup['id'];
+  schedulesId: ISchedule['id'];
+  teacherId: ITeacher['id'];
+  numberOfSubgroup: number;
 }
 
-export interface ScheduleEvent {
-  id: string;
-  groupId: string;
-  subjectId: string;
-  assignmentId: string;
-  teacherId: string;
-  classroomId: string;
+export interface IPurposeSubject {
+  id: number;
+  type: number;
+  isRemotely: boolean
+  subjectId: IAcademicSubject['id'];
+  classroomId: number
+  timeSlotId: ITimeSlot['id'];
+}
+
+export interface ITimeSlot {
+  id: number;
+  schedulesId: ISchedule['id'];
+  numberOfSubject: number
+  dayOfWeek: number;
   startTime: Date;
   endTime: Date;
 }
 
 export type ConflictType = 'TEACHER' | 'CLASSROOM';
 
-export interface ScheduleConflict {
+export interface IScheduleConflict {
   type: ConflictType;
   message: string;
-  existingEvent: ScheduleEvent;
+  existingEvent: IPurposeSubject;
 }

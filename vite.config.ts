@@ -15,17 +15,5 @@ export default defineConfig({
       '@shared': path.resolve('src/shared'),
       '@widgets': path.resolve('src/widgets'),
       },
-    },
-    // css: {
-    //   preprocessorOptions: {
-    //     scss: {
-    //       additionalData: `
-    //         @import "./src/app/styles/base/nullstyle.scss";
-    //         @import "./src/app/styles/base/mixin.scss";
-    //         @import "./src/app/styles/base/vars.scss";
-    //         @import "./src/app/styles/base/base.scss";
-    //       `,
-    //     },
-    //   },
-    // },
+    }
 })

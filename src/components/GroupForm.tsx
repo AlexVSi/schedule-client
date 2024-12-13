@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Users, Pencil, Trash2 } from 'lucide-react';
+import { Pencil, Trash2 } from 'lucide-react';
 import { observer } from 'mobx-react-lite';
-import { scheduleStore } from '@app/stores/ScheduleStore';
+import { scheduleStore } from '@app/stores/ScheduleStore.old';
 import { Button } from '../shared/ui/Button';
 
 export const GroupForm = observer(() => {

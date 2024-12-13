@@ -41,6 +41,6 @@
       "@shared/*": ["./shared/*"]
       },
   },
-  "include": ["src"],
+  "include": ["src", "src/shared/grpc/google"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

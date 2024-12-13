@@ -1,102 +1,55 @@
-import React, { useState } from 'react';
-import { Pencil, Trash2 } from 'lucide-react';
+import React, { useContext, useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
-import { scheduleStore } from '@app/stores/ScheduleStore';
+import { Context } from 'main';
 import { Button } from '@shared/ui/Button';
-import { Group } from '@entities/group/Group';
-import { List } from '@features/list/List';
+import { Group } from '@entities/group/ui/Group';
+import { CardList } from '@features/cardList/CardList';
+import { Plus } from 'lucide-react';
+import { GroupForm } from '@widgets/groupForm/GroupForm';
+import { Modal } from '@features/modal/Modal';
 
 export const Groups = observer(() => {
-    const [editingId, setEditingId] = useState<string | null>(null);
-    const [formData, setFormData] = useState({
-        name: '',
-        studentsCount: '',
-    });
+    const { groupStore, specialityStore } = useContext(Context)
+    const [groupFormModal, setGroupFormModal] = useState<boolean>(false)
 
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        if (editingId) {
-            scheduleStore.updateGroup(editingId, {
-                name: formData.name,
-                studentsCount: parseInt(formData.studentsCount, 10),
-            });
-            setEditingId(null);
-        } else {
-            scheduleStore.addGroup({
-                name: formData.name,
-                studentsCount: parseInt(formData.studentsCount, 10),
-            });
-        }
-        setFormData({ name: '', studentsCount: '' });
-    };
+    useEffect(() => {
+        fetchGroups()
+    }, [])
 
-    const handleEdit = (id: string) => {
-        const group = scheduleStore.groups.find(g => g.id === id);
-        if (group) {
-            setEditingId(id);
-            setFormData({
-                name: group.name,
-                studentsCount: group.studentsCount.toString(),
-            });
-        }
-    };
+    async function fetchGroups() {
+        await specialityStore.fetchAllSpecialities()
+        await groupStore.fetchAllGroups()
+    }
 
     return (
-        <div className="space-y-6">
-            <form onSubmit={handleSubmit} className="space-y-4">
-                <div>
-                    <label className="block text-sm font-medium text-gray-700">Название группы</label>
-                    <input
-                        type="text"
-                        value={formData.name}
-                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                        required
-                    />
-                </div>
-                <div>
-                    <label className="block text-sm font-medium text-gray-700">Количество студентов</label>
-                    <input
-                        type="number"
-                        value={formData.studentsCount}
-                        onChange={(e) => setFormData({ ...formData, studentsCount: e.target.value })}
-                        min="1"
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                        required
-                    />
-                </div>
-                <div className="flex space-x-4">
-                    <Button type="submit" className="flex-1">
-                        {editingId ? 'Сохранить изменения' : 'Добавить группу'}
+        <>
+            <div className="space-y-6">
+                <div className='flex justify-between align-center'>
+                    <h3 className="h3-title">Группы</h3>
+                    <Button
+                        onClick={() => setGroupFormModal(true)}
+                    >
+                        <Plus />Новая группа
                     </Button>
-                    {editingId && (
-                        <Button
-                            type="button"
-                            variant="secondary"
-                            className="flex-1"
-                            onClick={() => {
-                                setEditingId(null);
-                                setFormData({ name: '', studentsCount: '' });
-                            }}
-                        >
-                            Отменить
-                        </Button>
-                    )}
                 </div>
-            </form>
-
-            <List
-                title='Группы'
+                <CardList>
+                    {groupStore.groups.map(group =>
+                        <Group
+                            key={group.id}
+                            group={group}
+                        />
+                    )}
+                </CardList>
+            </div>
+            <Modal
+                isOpen={groupFormModal}
+                onClose={() => setGroupFormModal(false)}
+                title='Новая группа'
             >
-                {scheduleStore.groups.map(group =>
-                    <Group
-                        id={group.id}
-                        name={group.name}
-                        studentsCount={group.studentsCount}
-                        handle={handleEdit}
-                    />
-                )}
-            </List>
-        </div>
+                <GroupForm
+                    closeModal={() => setGroupFormModal(false)}
+                />
+            </Modal>
+        </>
     );
 });

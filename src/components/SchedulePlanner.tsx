@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite';
 import { format, startOfWeek, addDays, isToday, parse } from 'date-fns';
 import { ru } from 'date-fns/locale';
 import { Plus, X } from 'lucide-react';
-import { scheduleStore } from '@app/stores/ScheduleStore';
+import { scheduleStore } from '@app/stores/ScheduleStore.old';
 import type { CourseAssignment } from '@app/types/types';
 
 export const SchedulePlanner = observer(() => {

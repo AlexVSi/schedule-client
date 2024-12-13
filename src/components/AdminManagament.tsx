@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { observer } from 'mobx-react-lite';
-import { userStore } from '@app/stores/UserStore';
+import { userStore } from '@app/stores/AuthStore';
 import { Button } from '../shared/ui/Button';
 import { Pencil, Trash2, UserPlus } from 'lucide-react';
 
