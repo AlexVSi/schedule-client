@@ -2,7 +2,7 @@ import React, { FC } from 'react'
 import { Footer } from '@widgets/footer'
 import { Header } from '@widgets/header'
 import { Outlet } from 'react-router-dom'
-import { Sidebar } from '@widgets/sidebar'
+import { Sidebar } from '@widgets/sidebar/Sidebar'
 import { Nav } from '@widgets/nav'
 
 export const Layout = () => {
