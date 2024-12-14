@@ -114,7 +114,9 @@ export const Sidebar = observer(() => {
         onClose={() => setShowLoginModal(false)}
         title="Вход в систему"
       >
-        <LoginForm />
+        <LoginForm
+          closeModal={() => setShowLoginModal(false)}
+        />
       </Modal>
 
       {/* <Modal
