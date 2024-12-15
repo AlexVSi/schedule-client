@@ -4,7 +4,6 @@ import { Button } from '@shared/ui/Button'
 import { IAcademicSubject, IClassroom, IPurposeSubject, ITimeSlot } from '@app/types/types'
 import { Radio, RadioGroup } from '@headlessui/react'
 import { CheckIcon } from 'lucide-react'
-import { parse } from 'date-fns'
 import { Context } from 'main'
 
 interface PurposeFormProps {
@@ -19,9 +18,9 @@ export const PurposeForm: FC<PurposeFormProps> = ({ academicSubject, closeModal,
     const [formData, setFormData] = useState<Omit<IPurposeSubject, 'id'>>({
         type: 0,
         isRemotely: false,
-        subjectId: academicSubject.name,
+        subjectId: academicSubject.id,
         classroomId: 0,
-        timeSlotId: timeSlot.id,
+        slotId: timeSlot.id,
     })
 
     const weekTypes = [
@@ -32,9 +31,8 @@ export const PurposeForm: FC<PurposeFormProps> = ({ academicSubject, closeModal,
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
-        console.log(formData.timeSlotId)
-        if (!formData.subjectId || !formData.classroomId || !formData.timeSlotId) return;
-        purposeSubjectStore.add(formData)
+        console.log(formData.slotId)
+        if (!formData.subjectId || !formData.classroomId || !formData.slotId) alert('надоел');
 
         // const startTime = ;
         // const endTime = new Date(startTime.getTime() + 90 * 60000); // 90 minutes by default
@@ -49,6 +47,7 @@ export const PurposeForm: FC<PurposeFormProps> = ({ academicSubject, closeModal,
         } catch (error) {
             alert(error);
         }
+        closeModal(true)
     }
 
     const handleSelectionChange = (selectedItems: { id: number; itemLabel: string }[]) => {
