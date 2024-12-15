@@ -13,14 +13,6 @@ export const Specialties = observer(() => {
     const { specialityStore } = useContext(Context)
     const [specialtyFormModal, setSpecialtyFormModal] = useState(false)
 
-    useEffect(() => {
-        fetchSpecialties()
-    }, [])
-
-    async function fetchSpecialties() {
-        await specialityStore.fetchAllSpecialities()
-    }
-
     return (
         <>
             <div className="space-y-6">

@@ -19,13 +19,11 @@ export const Teacher: FC<TeacherProps> = observer(({ teacher }) => {
     const [subjectsForTeacher, setSubjectsForTeacher] = useState<ISubject[]>()
 
     useEffect(() => {
-        fetchSubjectsByTeacher()
+        (async () => {
+            const response = await subjectStore.fetchSubjectsByTeacher(teacher.id)
+            setSubjectsForTeacher(response)
+        })()
     }, [teacherFormModal])
-
-    async function fetchSubjectsByTeacher() {
-        const response = await subjectStore.fetchSubjectsByTeacher(teacher.id)
-        setSubjectsForTeacher(response)
-    }
 
     return (
         <>

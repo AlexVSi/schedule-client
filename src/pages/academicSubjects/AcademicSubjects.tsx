@@ -53,6 +53,7 @@ export const AcademicSubjects = observer(() => {
                  </select>
              </div>
                 <CardList>
+                    {academicSubjectStore.groupAcademicSubjects.length === 0 && <p>Назначений нет</p>}
                     {academicSubjectStore.groupAcademicSubjects.map(academicSubject =>
                         <AcademicSubject
                             key={academicSubject.id}

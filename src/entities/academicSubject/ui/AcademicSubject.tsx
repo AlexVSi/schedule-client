@@ -32,21 +32,14 @@ export const AcademicSubject: FC<AcademicSubjectProps> = ({ academicSubject, ope
     })
 
     useEffect(() => {
-        getTeacherFullName()
-        fetchData()
-    }, [])
-
-
-    function getTeacherFullName() {
-        const teacher = teacherStore.teachers.find(t => t.id === academicSubject.teacherId)
-        const fullName = `${teacher?.lastname} ${teacher?.firstname} ${teacher?.surname}`
-        setAcademicSubjectInfo({...academicSubjectInfo, teacher: fullName })
-    }
-
-    async function fetchData() {
-        const classrooms = await classroomStore.fetchByAcademicSubject(academicSubject.id)
-        setClassrooms(classrooms)
-    }
+        (async () => {
+            const teacher = teacherStore.teachers.find(t => t.id === academicSubject.teacherId)
+            const fullName = `${teacher?.lastname} ${teacher?.firstname} ${teacher?.surname}`
+            setAcademicSubjectInfo({...academicSubjectInfo, teacher: fullName })
+            const classrooms = await classroomStore.fetchByAcademicSubject(academicSubject.id)
+            setClassrooms(classrooms)
+        })()
+    }, [academicSubjectFormModal])
 
     return (
         <>
