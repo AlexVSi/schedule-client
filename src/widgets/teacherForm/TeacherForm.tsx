@@ -27,8 +27,6 @@ export const TeacherForm: FC<TeacherFormProps> = ({ teacher, closeModal, subject
             busyTimes: [],
         });
 
-    const [selectedSubjectList, setSelectedSubjectList] = useState<ISubject['id'][]>([])
-
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (teacher?.id) {
@@ -56,6 +54,7 @@ export const TeacherForm: FC<TeacherFormProps> = ({ teacher, closeModal, subject
 
     const allSubjectList = createSelectList(subjectStore.subjects)
     const defaultSelectedSubjectList = createSelectedList()
+    const [selectedSubjectList, setSelectedSubjectList] = useState<ISubject['id'][]>(defaultSelectedSubjectList.map(s => {return s.id}))
 
     function createSelectList(array: Array<any>) {
         const selectList = [] as { id: number; itemLabel: string }[]

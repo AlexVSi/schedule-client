@@ -33,17 +33,17 @@ export const Teachers = observer(() => {
                         )
                     })}
                 </CardList>
-                </div>
-                <Modal
-                    isOpen={teacherFormModal}
-                    onClose={() => setTeacherFormModal(false)}
-                    title={`Новый преподаватель`}
-                    size='big'
-                >
-                    <TeacherForm
-                        closeModal={() => setTeacherFormModal(false)}
-                    />
-                </Modal>
+            </div>
+            <Modal
+                isOpen={teacherFormModal}
+                onClose={() => setTeacherFormModal(false)}
+                title={`Новый преподаватель`}
+                size='big'
+            >
+                <TeacherForm
+                    closeModal={() => setTeacherFormModal(false)}
+                />
+            </Modal>
         </>
     );
 });

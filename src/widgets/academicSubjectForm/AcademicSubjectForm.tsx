@@ -1,3 +1,4 @@
+import React, { FC, useContext, useEffect, useState } from 'react'
 import { IAcademicSubject, IClassroom } from '@app/types/types';
 import { IncorrectSpoiler } from '@features/incorrectSpoiler/IncorrectSpoiler';
 import { SelectList } from '@features/selectList/SelectList';
@@ -7,7 +8,6 @@ import { Input } from '@shared/ui/Input';
 import { differenceSets } from '@shared/utils/differenceSets';
 import { CheckIcon } from 'lucide-react';
 import { Context } from 'main';
-import React, { FC, useContext, useEffect, useState } from 'react'
 
 interface GroupFormProps {
     academicSubject?: IAcademicSubject
@@ -34,7 +34,6 @@ export const AcademicSubjectForm: FC<GroupFormProps> = ({ academicSubject, close
         groupId: groupId,
         teacherId: 0,
     });
-    const [classroomList, setClassroomList] = useState<IClassroom['id'][]>([])
     const [incorrect, setIncorrect] = useState({
         name: false,
         teacherId: false,
@@ -111,6 +110,7 @@ export const AcademicSubjectForm: FC<GroupFormProps> = ({ academicSubject, close
     const allSubjectList = createSelectList(subjectStore.subjects)
     const allClassroomList = createSelectList(classroomStore.classrooms)
     const defaultSelectedClassroomList = createSelectedList()
+    const [classroomList, setClassroomList] = useState<IClassroom['id'][]>(defaultSelectedClassroomList.map(c => {return c.id}))
     const teacher = teacherStore.teachers.find( t => t.id === academicSubject?.teacherId)
     const defaultSelectedTeacher: { id: number; itemLabel: string } | null = teacher ? { id: teacher!.id, itemLabel: `${teacher?.lastname} ${teacher?.firstname} ${teacher?.surname}`} : null
 
