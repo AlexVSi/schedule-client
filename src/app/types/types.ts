@@ -61,13 +61,19 @@ export interface IAcademicSubject {
   numberOfSubgroup: number;
 }
 
+enum TypeSubject {
+  full = 0,
+  even = 1,
+  odd  = 2,
+}
+
 export interface IPurposeSubject {
   id: number;
-  type: number;
+  type: TypeSubject;
   isRemotely: boolean
   subjectId: IAcademicSubject['id'];
-  classroomId: number
-  timeSlotId: ITimeSlot['id'];
+  classroomId: IClassroom['id']
+  slotId: ITimeSlot['id'];
 }
 
 export interface ITimeSlot {

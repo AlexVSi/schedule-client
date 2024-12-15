@@ -10,22 +10,17 @@ import { AcademicSubjectForm } from '@widgets/academicSubjectForm/AcademicSubjec
 import { AcademicSubject } from '@entities/academicSubject/ui/AcademicSubject';
 
 export const AcademicSubjects = observer(() => {
-    const { academicSubjectStore, scheduleStore, groupStore, classroomStore, subjectStore, teacherStore, specialityStore } = useContext(Context)
+    const { academicSubjectStore, scheduleStore, groupStore } = useContext(Context)
     const [selectedGroup, setSelectedGroup] = useState<IGroup['id']>(groupStore.currentGroup);
     const [academicSubjectFormModal, setAcademicSubjectFormModal] = useState<boolean>(false)
 
     useEffect(() => {
-        fetchAcademicSubject()
+        if (selectedGroup) {
+            (async () => {
+                await academicSubjectStore.fetchAllByGroupAndSchedule(selectedGroup, scheduleStore.currentScheduleId)
+            })()
+        }
     }, [selectedGroup])
-
-    async function fetchAcademicSubject() {
-        await specialityStore.fetchAllSpecialities()
-        await teacherStore.fetchAllTeachers()
-        await classroomStore.fetchAllClassrooms()
-        await groupStore.fetchAllGroups()
-        await subjectStore.fetchAllsubjects()
-        await academicSubjectStore.fetchAllByGroupAndSchedule(selectedGroup, scheduleStore.currentScheduleId)
-    }
 
     return (
         <>

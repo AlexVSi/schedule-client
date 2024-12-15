@@ -2,6 +2,7 @@ import { makeAutoObservable } from 'mobx';
 import { ISchedule, ITimeSlot } from '@app/types/types';
 import TimeSlotService from '@entities/timeSlot/api/TimeSlot.service';
 
+
 export default class TimeSlotStore {
 
     timeSlots = [] as ITimeSlot[];
@@ -13,18 +14,12 @@ export default class TimeSlotStore {
         { id: 5, day: 'Пятница' },
     ]
 
-    grid = {} as { 1: {startTime: Date, endTime: Date} [] }[]
-
     constructor() {
         makeAutoObservable(this)
     }
 
     setTimeSlots(timeSlots: ITimeSlot[]) {
         this.timeSlots = timeSlots
-    }
-
-    createGrid() {
-
     }
 
     async fetchAllBySchedule(id: ISchedule['id']) {

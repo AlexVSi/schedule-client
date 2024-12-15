@@ -7,8 +7,8 @@ export default class PurposeSubjectService {
         return $api.get<IPurposeSubject>(`purpose/get/${id}`)
     }
 
-    static async getByAcademicSubject(academicSubjectId: IAcademicSubject['id']): Promise<AxiosResponse<{ purposeSubjects: IPurposeSubject[] }>> {
-        return $api.get<{ purposeSubjects: IPurposeSubject[] }>(`purpose/get/by-subject/${academicSubjectId}`)
+    static async getByAcademicSubject(academicSubjectId: IAcademicSubject['id']): Promise<AxiosResponse<{ purposes: IPurposeSubject[] }>> {
+        return $api.get<{ purposes: IPurposeSubject[] }>(`purpose/get/by-subject/${academicSubjectId}`)
     }
 
     static async add(body: Omit<IPurposeSubject, 'id'>): Promise<AxiosResponse<{ id: IPurposeSubject['id'] }>> {
@@ -20,6 +20,6 @@ export default class PurposeSubjectService {
     }
 
     static async remove(id: IPurposeSubject['id']) {
-        await $api.delete(`purpose/remove/${id}`)
+        await $api.delete(`perpose/remove/${id}`)
     }
 }

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Plus } from 'lucide-react';
 import { observer } from 'mobx-react-lite';
 import { Button } from '@shared/ui/Button';
@@ -9,17 +9,8 @@ import { SubjectForm } from '@widgets/subjectForm/SubjectForm';
 import { Context } from 'main';
 
 export const Subjects = observer(() => {
-    const { subjectStore, teacherStore } = useContext(Context)
+    const { subjectStore } = useContext(Context)
     const [subjectFormModal, setSubjectFormModal] = useState<boolean>(false)
-
-    useEffect(() => {
-        fetchSubjects()
-    }, [])
-
-    async function fetchSubjects() {
-        await teacherStore.fetchAllTeachers()
-        await subjectStore.fetchAllsubjects()
-    }
 
     return (
         <>

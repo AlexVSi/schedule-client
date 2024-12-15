@@ -73,7 +73,6 @@ export default class AuthStore {
         try {
             this.setLoading(true)
             const response = await axios.get<AuthResponse>(`${this.AUTH_URL}refresh`, { withCredentials: true })
-            console.log(`${this.AUTH_URL}refresh`)
             const token = response.data.accessToken
             const tokenDecode = jwtDecode<IUserLogin>(token)
             localStorage.setItem('token', token)

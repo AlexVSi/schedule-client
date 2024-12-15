@@ -5,7 +5,6 @@ import PurposeSubjectService from '@entities/purposeSubject/api/PurposeSubject.s
 export default class PurposeSubjectStore {
 
     purposeSubjects = [] as IPurposeSubject[];
-    groupPurposeSubjects = [] as IPurposeSubject[];
 
     constructor() {
         makeAutoObservable(this)
@@ -15,12 +14,11 @@ export default class PurposeSubjectStore {
         this.purposeSubjects = PurposeSubjects
     }
 
-    async fetchAllPurposeSubjects(id: IAcademicSubject['id']) {
+    async fetchByAcademicSubject(id: IAcademicSubject['id']) {
         try {
             const responce = await PurposeSubjectService.getByAcademicSubject(id)
-            this.setPurposeSubjects(responce.data.purposeSubjects)
-            console.log(responce.data.purposeSubjects)
-            return responce.data.purposeSubjects
+            this.setPurposeSubjects(responce.data.purposes)
+            return responce.data.purposes
         } catch (e) {
             console.log(e)
         }
@@ -29,7 +27,7 @@ export default class PurposeSubjectStore {
     async add(body: Omit<IPurposeSubject, 'id'>) {
         try {
             const responce = await PurposeSubjectService.add(body)
-            this.fetchAllPurposeSubjects(responce.data.id)
+            this.fetchByAcademicSubject(responce.data.id)
         } catch (e) {
             console.log(e);
             console.log(body);

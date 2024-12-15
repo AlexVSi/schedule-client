@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import { Context } from 'main';
 import { Button } from '@shared/ui/Button';
@@ -9,17 +9,8 @@ import { GroupForm } from '@widgets/groupForm/GroupForm';
 import { Modal } from '@features/modal/Modal';
 
 export const Groups = observer(() => {
-    const { groupStore, specialityStore } = useContext(Context)
+    const { groupStore } = useContext(Context)
     const [groupFormModal, setGroupFormModal] = useState<boolean>(false)
-
-    useEffect(() => {
-        fetchGroups()
-    }, [])
-
-    async function fetchGroups() {
-        await specialityStore.fetchAllSpecialities()
-        await groupStore.fetchAllGroups()
-    }
 
     return (
         <>

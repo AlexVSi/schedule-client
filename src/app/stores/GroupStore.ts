@@ -5,7 +5,7 @@ import GroupService from '@entities/group/api/group.service';
 export default class GroupStore {
 
     groups = [] as IGroup[];
-    currentGroup = 4 as IGroup['id'];
+    currentGroup = 0 as IGroup['id'];
 
     constructor() {
         makeAutoObservable(this)

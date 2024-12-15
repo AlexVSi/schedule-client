@@ -1,7 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { Layout } from './layout';
-import { Calendar } from '@pages/calendar';
 import { Planner } from '@pages/planner';
 import { Classrooms } from '@pages/classrooms/Classrooms';
 import { Teachers } from '@pages/teachers/Teachers';
@@ -15,12 +14,20 @@ const scheduleContext = createContext<string>('')
 
 const App = () => {
   const [schedule, setSchedule] = useState('')
-  const { authStore } = useContext(Context)
+  const { authStore, specialityStore, teacherStore, classroomStore, groupStore, subjectStore, scheduleStore, timeSlotStore } = useContext(Context)
 
   useEffect(() => {
     if (localStorage.getItem('token')) {
         authStore.checkAuth()
     }
+    (async () => {
+      await specialityStore.fetchAllSpecialities()
+      await teacherStore.fetchAllTeachers()
+      await classroomStore.fetchAllClassrooms()
+      await groupStore.fetchAllGroups()
+      await subjectStore.fetchAllsubjects()
+      await timeSlotStore.fetchAllBySchedule(scheduleStore.currentScheduleId)
+    })()
 }, [])
 
   return (
