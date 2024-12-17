@@ -6,7 +6,7 @@ import { AuthResponse } from "@entities/auth/models/AuthResponse";
 import { jwtDecode } from "jwt-decode";
 
 export default class AuthStore {
-    AUTH_URL = import.meta.env.VITE_AUTH_URL
+    private AUTH_URL = import.meta.env.VITE_AUTH_URL
     user = {} as IUserLogin
     isAuth: boolean = false
     isLoading: boolean = false

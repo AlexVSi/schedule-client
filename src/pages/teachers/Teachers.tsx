@@ -9,7 +9,7 @@ import { TeacherForm } from '@widgets/teacherForm/TeacherForm';
 import { Context } from 'main';
 
 export const Teachers = observer(() => {
-    const { teacherStore } = useContext(Context)
+    const { teacherStore, authStore } = useContext(Context)
     const [teacherFormModal, setTeacherFormModal] = useState<boolean>(false)
 
     return (
@@ -17,21 +17,21 @@ export const Teachers = observer(() => {
             <div className="space-y-6">
                 <div className='flex justify-between align-center'>
                     <h3 className="h3-title">Преподаватели</h3>
-                    <Button
-                        onClick={() => setTeacherFormModal(true)}
-                    >
-                        <Plus />Новый преподаватель
-                    </Button>
+                    {authStore.isAuth &&
+                        <Button
+                            onClick={() => setTeacherFormModal(true)}
+                        >
+                            <Plus />Новый преподаватель
+                        </Button>
+                    }
                 </div>
                 <CardList>
-                    {teacherStore.teachers.map(teacher => {
-                        return (
-                            <Teacher
-                                key={teacher.id}
-                                teacher={teacher}
-                            />
-                        )
-                    })}
+                    {teacherStore.teachers.map(teacher =>
+                        <Teacher
+                            key={teacher.id}
+                            teacher={teacher}
+                        />
+                    )}
                 </CardList>
             </div>
             <Modal

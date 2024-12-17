@@ -9,7 +9,7 @@ import { SubjectForm } from '@widgets/subjectForm/SubjectForm';
 import { Context } from 'main';
 
 export const Subjects = observer(() => {
-    const { subjectStore } = useContext(Context)
+    const { subjectStore, authStore } = useContext(Context)
     const [subjectFormModal, setSubjectFormModal] = useState<boolean>(false)
 
     return (
@@ -17,11 +17,13 @@ export const Subjects = observer(() => {
             <div className="space-y-6">
                 <div className='flex justify-between align-center'>
                     <h3 className="h3-title">Предметы</h3>
-                    <Button
-                        onClick={() => setSubjectFormModal(true)}
-                    >
-                        <Plus />Новый предмет
-                    </Button>
+                    {authStore.isAuth &&
+                        <Button
+                            onClick={() => setSubjectFormModal(true)}
+                        >
+                            <Plus />Новый предмет
+                        </Button>
+                    }
                 </div>
                 <CardList>
                     {subjectStore.subjects.map(subject => {

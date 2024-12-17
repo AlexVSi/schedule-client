@@ -16,7 +16,7 @@ interface PurposeFormProps {
 export const PurposeForm: FC<PurposeFormProps> = ({ academicSubject, closeModal, classrooms, timeSlot }) => {
     const { purposeSubjectStore } = useContext(Context)
     const [formData, setFormData] = useState<Omit<IPurposeSubject, 'id'>>({
-        type: 0,
+        type: 'full',
         isRemotely: false,
         subjectId: academicSubject.id,
         classroomId: 0,
@@ -24,30 +24,20 @@ export const PurposeForm: FC<PurposeFormProps> = ({ academicSubject, closeModal,
     })
 
     const weekTypes = [
-        { value: 0, type: 'Все недели' },
-        { value: 1, type: 'Четная неделя' },
-        { value: 2, type: 'Нечетная неделя' },
+        { value: 'full', type: 'Все недели' },
+        { value: 'even', type: 'Четная неделя' },
+        { value: 'odd', type: 'Нечетная неделя' }
     ]
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
-        console.log(formData.slotId)
-        if (!formData.subjectId || !formData.classroomId || !formData.slotId) alert('надоел');
-
-        // const startTime = ;
-        // const endTime = new Date(startTime.getTime() + 90 * 60000); // 90 minutes by default
-
+        if (!formData.subjectId || !formData.classroomId || !formData.slotId) return
         try {
             purposeSubjectStore.add(formData)
-
-            //   setSelectedSlot(null);
-            //   setSelectedAssignment('');
-            //   setSelectedTeacher('');
-            //   setSelectedClassroom('');
+            closeModal(true)
         } catch (error) {
             alert(error);
         }
-        closeModal(true)
     }
 
     const handleSelectionChange = (selectedItems: { id: number; itemLabel: string }[]) => {

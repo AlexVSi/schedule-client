@@ -1,7 +1,7 @@
 import { makeAutoObservable } from 'mobx';
 import { IAcademicSubject, IGroup, ISchedule } from '@app/types/types';
 import AcademicSubjectService from '@entities/academicSubject/api/AcademicSubject.service';
-
+import PurposeSubjectService from '@entities/purposeSubject/api/PurposeSubject.service';
 
 export default class AcademicSubjectStore {
     groupAcademicSubjects = [] as IAcademicSubject[];
@@ -67,5 +67,18 @@ export default class AcademicSubjectStore {
         } catch (e) {
             console.log(e);
         }
+    }
+
+    async checkCountHoursPerWeek(s: IAcademicSubject): Promise<{ id: number, shortage: number }> {
+        const purposes = (await PurposeSubjectService.getByAcademicSubject(s.id)).data.purposes
+        let counter = 0
+        for (let p of purposes) {
+            if (p.type === 'full') {
+                counter += 2
+            } else {
+                counter += 1
+            }
+        }
+        return { id: s.name, shortage: s.countHoursPerWeek - counter }
     }
 }

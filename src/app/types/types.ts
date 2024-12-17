@@ -61,7 +61,7 @@ export interface IAcademicSubject {
   numberOfSubgroup: number;
 }
 
-enum TypeSubject {
+export enum TypeSubject {
   full = 0,
   even = 1,
   odd  = 2,
@@ -69,7 +69,8 @@ enum TypeSubject {
 
 export interface IPurposeSubject {
   id: number;
-  type: TypeSubject;
+  // type: TypeSubject;
+  type: 'full' | 'even' | 'odd';
   isRemotely: boolean
   subjectId: IAcademicSubject['id'];
   classroomId: IClassroom['id']

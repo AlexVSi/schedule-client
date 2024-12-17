@@ -9,7 +9,7 @@ import { GroupForm } from '@widgets/groupForm/GroupForm';
 import { Modal } from '@features/modal/Modal';
 
 export const Groups = observer(() => {
-    const { groupStore } = useContext(Context)
+    const { groupStore, authStore } = useContext(Context)
     const [groupFormModal, setGroupFormModal] = useState<boolean>(false)
 
     return (
@@ -17,11 +17,13 @@ export const Groups = observer(() => {
             <div className="space-y-6">
                 <div className='flex justify-between align-center'>
                     <h3 className="h3-title">Группы</h3>
-                    <Button
-                        onClick={() => setGroupFormModal(true)}
-                    >
-                        <Plus />Новая группа
-                    </Button>
+                    {authStore.isAuth &&
+                        <Button
+                            onClick={() => setGroupFormModal(true)}
+                        >
+                            <Plus />Новая группа
+                        </Button>
+                    }
                 </div>
                 <CardList>
                     {groupStore.groups.map(group =>

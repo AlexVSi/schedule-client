@@ -9,19 +9,21 @@ import { ClassroomForm } from '@widgets/classroomForm/ClassroomForm';
 import { Context } from 'main';
 
 export const Classrooms = observer(() => {
-    const { classroomStore } = useContext(Context)
-    const [classroomFormModal, setClassroomFormModal] = useState(false)
+    const { classroomStore, authStore } = useContext(Context)
+    const [classroomFormModal, setClassroomFormModal] = useState<boolean>(false)
 
     return (
         <>
             <div className="space-y-6">
                 <div className='flex justify-between align-center'>
                     <h3 className="h3-title">Аудитории</h3>
-                    <Button
-                        onClick={() => setClassroomFormModal(true)}
-                    >
-                        <Plus />Новая аудитория
-                    </Button>
+                    {authStore.isAuth &&
+                        <Button
+                            onClick={() => setClassroomFormModal(true)}
+                        >
+                            <Plus />Новая аудитория
+                        </Button>
+                    }
                 </div>
                 <CardList>
                     {classroomStore.classrooms.map(classroom =>

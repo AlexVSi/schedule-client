@@ -32,7 +32,6 @@ export default class PurposeSubjectStore {
     async add(body: Omit<IPurposeSubject, 'id'>) {
         try {
             const responce = await PurposeSubjectService.add(body)
-            this.fetchByAcademicSubject(responce.data.id)
             this.groupPurposeSubjects.push({...body, id: responce.data.id})
         } catch (e) {
             console.log(e);
