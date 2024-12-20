@@ -6,9 +6,9 @@ import { observer } from 'mobx-react-lite'
 
 interface CardProps {
     children?: React.ReactNode
-    onCLick?: (e?) => void
-    onClickEdit?: (e?) => void
-    onClickDelete?: (e?) => void
+    onCLick?: (e?: React.MouseEvent) => void
+    onClickEdit?: (e?: React.MouseEvent) => void
+    onClickDelete?: (e?: React.MouseEvent) => void
     title?: string
     subTitle?: string
     cardText?: string[]
@@ -25,22 +25,24 @@ export const Card: FC<CardProps> = observer(({ children, onCLick, onClickEdit, o
                 {title}
                 <div className='flex flex-nowrap items-center'>
                     {authStore.isAuth &&
-                        <>
+                        <div>
+                            {onClickEdit &&
                             <Button
                                 variant="ghost"
                                 size="vsm"
                                 onClick={onClickEdit}
                             >
                                 <Pencil className="w-4 h-4" />
-                            </Button>
+                            </Button>}
+                            {onClickDelete &&
                             <Button
                                 variant="ghost"
                                 size="vsm"
                                 onClick={onClickDelete}
                             >
                                 <Trash2 className='trash' />
-                            </Button>
-                        </>
+                            </Button>}
+                        </div>
                     }
                 </div>
             </div>
