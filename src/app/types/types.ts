@@ -1,7 +1,7 @@
 export interface ISchedule {
   id: number;
   name: string;
-  isPublic: string;
+  isPublic: boolean;
   timeOfStart: Date;
 }
 
@@ -10,15 +10,15 @@ export interface ITeacher {
   lastname: string;
   firstname: string;
   surname: string;
-  busyTimes: IBusyTime['id'][];
+  // busyTimes: IBusyTime['id'][];
 }
 
 export interface IBusyTime {
   id: number;
-  teacher: ITeacher['id'];
-  daysOfWeek: Date;
-  timeOfStart: Date;
-  timeOfEnd: Date;
+  teacherId: ITeacher['id'];
+  dayOfWeek: number;
+  startTime: Date;
+  endTime: Date;
 }
 
 export interface ISpeciality {
@@ -69,11 +69,10 @@ export enum TypeSubject {
 
 export interface IPurposeSubject {
   id: number;
-  // type: TypeSubject;
   type: 'full' | 'even' | 'odd';
   isRemotely: boolean
   subjectId: IAcademicSubject['id'];
-  classroomId: IClassroom['id']
+  classroomId?: IClassroom['id']
   slotId: ITimeSlot['id'];
 }
 
@@ -89,7 +88,8 @@ export interface ITimeSlot {
 export type ConflictType = 'TEACHER' | 'CLASSROOM';
 
 export interface IScheduleConflict {
+  academicSubjectId: IAcademicSubject['id'];
   type: ConflictType;
   message: string;
-  existingEvent: IPurposeSubject;
+  existingEvent?: IPurposeSubject;
 }

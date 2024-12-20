@@ -1,5 +1,5 @@
 import { $api } from "@shared/http";
-import { ISubject, ITeacher } from "@app/types/types";
+import { IBusyTime, ISubject, ITeacher } from "@app/types/types";
 import { AxiosResponse } from "axios";
 
 export default class TeacherService {
@@ -33,5 +33,25 @@ export default class TeacherService {
 
     static async remove(id: ITeacher['id']) {
         await $api.delete<ITeacher['id']>(`teacher/remove/${id}`)
+    }
+
+    static async getBusyTime(id: IBusyTime['id']): Promise<AxiosResponse<{ times: IBusyTime }>> {
+        return $api.get<{ times: IBusyTime }>(`busy-time/get/${id}`)
+    }
+
+    static async getBusyTimesByTeacher(id: IBusyTime['id']): Promise<AxiosResponse<{ times: IBusyTime[] }>> {
+        return $api.get<{ times: IBusyTime[] }>(`teacher/${id}/busy-time/get`)
+    }
+
+    static async addBusyTime(body: Omit<IBusyTime, 'id'>): Promise<AxiosResponse<{ id: IBusyTime['id'] }>> {
+        return $api.post<{ id: IBusyTime['id'] }>(`teacher/busy-time/add`, body)
+    }
+
+    static async editBusyTime(body: IBusyTime) {
+        return $api.put<{ times: IBusyTime }>(`teacher/busy-time/edit/${body.id}`, body)
+    }
+
+    static async removeBusyTime(id: IBusyTime['id']) {
+        return $api.delete(`teacher/busy-time/remove/${id}`)
     }
 }

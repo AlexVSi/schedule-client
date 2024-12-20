@@ -1,5 +1,5 @@
 import { makeAutoObservable } from 'mobx';
-import { ISubject, ITeacher } from '@app/types/types';
+import { IBusyTime, ISubject, ITeacher } from '@app/types/types';
 import TeacherService from '@entities/teacher/api/teacher.service';
 
 export default class TeacherStore {
@@ -12,6 +12,10 @@ export default class TeacherStore {
 
     setTeachers(teachers: ITeacher[]) {
         this.teachers = teachers
+    }
+
+    addTeacher(teaher: ITeacher) {
+        this.teachers = [...this.teachers, teaher]
     }
 
     async fetchAllTeachers() {
@@ -46,8 +50,8 @@ export default class TeacherStore {
     async add(body: Omit<ITeacher, 'id'>) {
         try {
             const response = await TeacherService.add(body)
-            await this.fetchAllTeachers()
             await this.fetchTeachersBySubject(response.data.id)
+            this.addTeacher({...body, id: response.data.id})
             return response.data.id
         } catch (e) {
             console.log(e);
@@ -85,6 +89,48 @@ export default class TeacherStore {
         try {
             await TeacherService.remove(id)
             this.setTeachers(this.teachers.filter(t => t.id !== id))
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    async fetchBusyTime() {
+        try {
+
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    async fetchBusyTimesByTeacher(id: ITeacher['id']) {
+        try {
+            const responce = await TeacherService.getBusyTimesByTeacher(id)
+            return responce.data.times
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    async addBusyTime(body: Omit<IBusyTime, 'id'>) {
+        try {
+            const responce = await TeacherService.addBusyTime(body)
+            return responce.data.id
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    async editBusyTime() {
+        try {
+        
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    async removeBusyTime(id: IBusyTime['id']) {
+        try {
+            await TeacherService.removeBusyTime(id)
         } catch (e) {
             console.log(e);
         }

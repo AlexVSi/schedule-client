@@ -1,6 +1,6 @@
 import React, { FC, useContext, useEffect, useState } from 'react'
 import { Card } from '@features/card/Card'
-import { ISubject, ITeacher } from '@app/types/types'
+import { IBusyTime, ISubject, ITeacher } from '@app/types/types'
 import { CardListItem } from '@features/cardListItem/CardListItem'
 import { Modal } from '@features/modal/Modal'
 import { ConfirmAction } from '@widgets/confirmAction/ConfirmAction'
@@ -17,11 +17,14 @@ export const Teacher: FC<TeacherProps> = observer(({ teacher }) => {
     const [teacherFormModal, setTeacherFormModal] = useState<boolean>(false)
     const [teacherConfirmAction, setTeacherConfirmAction] = useState<boolean>(false)
     const [subjectsForTeacher, setSubjectsForTeacher] = useState<ISubject[]>()
+    const [busyTimes, setBusyTimes] = useState<IBusyTime[]>()
 
     useEffect(() => {
         (async () => {
-            const response = await subjectStore.fetchSubjectsByTeacher(teacher.id)
-            setSubjectsForTeacher(response)
+            const subjects = await subjectStore.fetchSubjectsByTeacher(teacher.id)
+            setSubjectsForTeacher(subjects)
+            const teacherBusyTimes = await teacherStore.fetchBusyTimesByTeacher(teacher.id)
+            setBusyTimes(teacherBusyTimes)
         })()
     }, [teacherFormModal])
 
@@ -49,6 +52,7 @@ export const Teacher: FC<TeacherProps> = observer(({ teacher }) => {
                 <TeacherForm
                     teacher={teacher}
                     subjects={subjectsForTeacher}
+                    busyTimes={busyTimes}
                     closeModal={() => setTeacherFormModal(false)}
                 />
             </Modal>
