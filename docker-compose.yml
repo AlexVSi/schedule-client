@@ -7,8 +7,5 @@ services:
     container_name: schedule-client
     ports:
       - '3003:3003'
-    volumes:
-      - .:/app
-      - /app/node_modules
     stdin_open: true
     tty: true
