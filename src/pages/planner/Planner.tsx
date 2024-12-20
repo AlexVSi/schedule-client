@@ -38,6 +38,7 @@ export const Planner = observer(() => {
             }
             setCheckCountHoursPerWeek(luckOfHours)
         })()
+        console.log('assds')
     }, [purposeSubjectStore.groupPurposeSubjects])
 
     return (
@@ -49,8 +50,7 @@ export const Planner = observer(() => {
                     onChange={(e) => {
                         setSelectedGroup(+e.target.value)
                         groupStore.setCurrentGroup(+e.target.value)
-                    }
-                    }
+                    }}
                     className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                 >
                     <option value="">Выберите группу</option>

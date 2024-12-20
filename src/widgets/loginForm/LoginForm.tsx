@@ -16,9 +16,7 @@ export const LoginForm: React.FC<LoginFormProps> = observer(({ closeModal }) => 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         setError('');
-
         const success = authStore.login(login, password);
-        console.log(success)
         if (!success) {
             setError('Неверный login или пароль');
         }

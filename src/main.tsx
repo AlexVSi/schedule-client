@@ -14,7 +14,7 @@ import PurposeSubjectStore from '@app/stores/PurposeSubjectStore.ts'
 import TimeSlotStore from '@app/stores/TimeSlotStore.ts'
 import AuthStore from '@app/stores/AuthStore.ts'
 
-interface State {
+export interface ContextState {
     scheduleStore: ScheduleStore,
     groupStore: GroupStore,
     teacherStore: TeacherStore,
@@ -38,7 +38,7 @@ const purposeSubjectStore = new PurposeSubjectStore()
 const timeSlotStore = new TimeSlotStore()
 const authStore = new AuthStore()
 
-export const Context = createContext<State>({
+export const Context = createContext<ContextState>({
     scheduleStore, groupStore, teacherStore, specialityStore, classroomStore, subjectStore, academicSubjectStore, purposeSubjectStore, timeSlotStore, authStore
 })
 

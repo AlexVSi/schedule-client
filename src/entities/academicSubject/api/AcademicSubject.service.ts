@@ -4,15 +4,15 @@ import { IAcademicSubject, IGroup, ISchedule } from "@app/types/types";
 
 export default class AcademicSubjectService {
     static async get(id: IAcademicSubject['id']): Promise<AxiosResponse<IAcademicSubject>> {
-        return $api.get<IAcademicSubject>(`group/get/${id}`)
+        return $api.get<IAcademicSubject>(`subject/get/${id}`)
     }
 
     static async getAll(): Promise<AxiosResponse<{ subjects: IAcademicSubject[] }>> {
-        return $api.get<{ subjects: IAcademicSubject[] }>(`group/get/all`)
+        return $api.get<{ subjects: IAcademicSubject[] }>(`subject/get/all`)
     }
 
     static async getAllBySchedule(id: ISchedule['id']): Promise<AxiosResponse<{ subjects: IAcademicSubject[] }>> {
-        return $api.get<{ subjects: IAcademicSubject[] }>(`group/subject/get/all-by-schedule/${id}`)
+        return $api.get<{ subjects: IAcademicSubject[] }>(`subject/get/all-by-schedule/${id}`)
     }
 
     static async getAllByGroupAndSchedule(groupId: IGroup['id'], scheduleId: ISchedule['id']): Promise<AxiosResponse<{ subjects: IAcademicSubject[] }>> {

@@ -1,5 +1,5 @@
 import { ISchedule } from "@app/types/types";
-import ScheduleService from "@entities/schedule/schedule.service";
+import ScheduleService from "@entities/schedule/api/schedule.service";
 import { makeAutoObservable } from "mobx";
 
 
