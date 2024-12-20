@@ -1,45 +1,48 @@
-import { IAcademicSubject, IPurposeSubject, IScheduleConflict, ITimeSlot } from "@app/types/types";
-import { Context } from "main";
-import { useContext } from "react";
+import { IAcademicSubject, IScheduleConflict, ITimeSlot } from "@app/types/types";
+import { ContextState } from "main";
 
-export function checkScheduleConflicts(assigment: IAcademicSubject, timeSlot: ITimeSlot): IScheduleConflict[] {
-    const { timeSlotStore } = useContext(Context)
+export async function checkScheduleConflicts(assigment: IAcademicSubject, timeSlot: ITimeSlot, context: ContextState): Promise<IScheduleConflict[]> {
     const conflicts: IScheduleConflict[] = [];
 
-    const allAssigments = timeSlotStore.fetchTimeSlot(timeSlot.id)
+    const allTimeSlotPurposes = await context.purposeSubjectStore.fetchByTimeSlot(timeSlot.id)
 
-    const conflictingEvents = this.scheduleEvents.filter(existingEvent => {
-      const isTimeOverlap = (
-        (event.startTime >= existingEvent.startTime && event.startTime < existingEvent.endTime) ||
-        (event.endTime > existingEvent.startTime && event.endTime <= existingEvent.endTime) ||
-        (event.startTime <= existingEvent.startTime && event.endTime >= existingEvent.endTime)
-      );
-
-      return isTimeOverlap;
-    });
-
-    const teacherConflict = conflictingEvents.find(e => e.teacherId === event.teacherId);
-    if (teacherConflict) {
-      const teacher = this.teachers.find(t => t.id === event.teacherId);
-      conflicts.push({
-        type: 'TEACHER',
-        message: `Преподаватель ${teacher?.name} уже занят в это время`,
-        existingEvent: teacherConflict,
-      });
+    if (allTimeSlotPurposes) {
+        for (let p of allTimeSlotPurposes) {
+            const a = await context.academicSubjectStore.fetchAllById(p.subjectId)
+            const t = context.teacherStore.teachers.find(t => t.id === a?.teacherId)
+            if (a?.teacherId === assigment?.teacherId) {
+                conflicts.push({
+                    academicSubjectId: assigment.id,
+                    type: 'TEACHER',
+                    message: `Преподаватель ${t?.lastname} ${t?.firstname[0]}.${t?.surname[0]}. уже занят в это время`,
+                    existingEvent: p,
+                });
+                break
+            }
+        }
     }
 
-    const classroomConflict = conflictingEvents.find(e => e.classroomId === event.classroomId);
-    if (classroomConflict) {
-      const classroom = this.classrooms.find(c => c.id === event.classroomId);
-      conflicts.push({
-        type: 'CLASSROOM',
-        message: `Аудитория ${classroom?.number} уже занята в это время`,
-        existingEvent: classroomConflict,
-      });
+    if (allTimeSlotPurposes) {
+        const academicSubjectClassrooms = await context.classroomStore.fetchByAcademicSubject(assigment.id)
+        const len = academicSubjectClassrooms?.length
+        let counter = 0
+        for (let p of allTimeSlotPurposes) {
+            academicSubjectClassrooms?.map((academicSubjectClassroom => {
+                if (academicSubjectClassroom.id === p.classroomId) {
+                    counter += 1
+                }
+            }))
+        }
+        if (len === counter) {
+            conflicts.push({
+                academicSubjectId: assigment.id,
+                type: 'CLASSROOM',
+                message: `Аудитории уже заняты в это время`,
+            })
+        }
     }
-
     return conflicts;
-  }
+}
 
 
 //   Конфликты:

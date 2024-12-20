@@ -14,7 +14,7 @@ export default class AcademicSubjectStore {
         this.groupAcademicSubjects = groupAcademicSubjects
     }
 
-    async fetchAllGroups() {
+    async fetchAllAcademicSubjects() {
         try {
             const responce = await AcademicSubjectService.getAll()
             this.setAcademicSubjects(responce.data.subjects)
@@ -36,6 +36,15 @@ export default class AcademicSubjectStore {
         try {
             const responce = await AcademicSubjectService.getAllByGroupAndSchedule(groupId, scheduleId)
             this.setAcademicSubjects(responce.data.subjects)
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
+    async fetchById(id: IAcademicSubject['id']) {
+        try {
+            const responce = await AcademicSubjectService.get(id)
+            return responce.data
         } catch (e) {
             console.log(e)
         }

@@ -1,5 +1,5 @@
 import { makeAutoObservable } from 'mobx';
-import { IAcademicSubject, IPurposeSubject } from '@app/types/types';
+import { IAcademicSubject, IPurposeSubject, ITimeSlot } from '@app/types/types';
 import PurposeSubjectService from '@entities/purposeSubject/api/PurposeSubject.service';
 
 export default class PurposeSubjectStore {
@@ -19,6 +19,10 @@ export default class PurposeSubjectStore {
         this.groupPurposeSubjects = groupPurposeSubjects
     }
 
+    addGroupPurposeSubject(groupPurposeSubject: IPurposeSubject) {
+        this.groupPurposeSubjects = [...this.groupPurposeSubjects, groupPurposeSubject]
+    }
+
     async fetchByAcademicSubject(id: IAcademicSubject['id']) {
         try {
             const responce = await PurposeSubjectService.getByAcademicSubject(id)
@@ -29,10 +33,19 @@ export default class PurposeSubjectStore {
         }
     }
 
+    async fetchByTimeSlot(id: ITimeSlot['id']) {
+        try {
+            const responce = await PurposeSubjectService.getByTimeSlot(id)
+            return responce.data.purposes
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
     async add(body: Omit<IPurposeSubject, 'id'>) {
         try {
             const responce = await PurposeSubjectService.add(body)
-            this.groupPurposeSubjects.push({...body, id: responce.data.id})
+            this.addGroupPurposeSubject({...body, id: responce.data.id})
         } catch (e) {
             console.log(e);
             console.log(body);
@@ -42,7 +55,6 @@ export default class PurposeSubjectStore {
     async edit(body: Partial<IPurposeSubject>) {
         try {
             const responce = await PurposeSubjectService.edit(body)
-            // this.fetchAllPurposeSubjects(responce.data.id)
         } catch (e) {
             console.log(e);
         }

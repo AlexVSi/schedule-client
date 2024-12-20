@@ -1,21 +1,53 @@
-import React, { FC, useContext, useState } from 'react'
-import { Plus } from 'lucide-react';
-import { IGroup, IPurposeSubject, ITimeSlot } from '@app/types/types';
+import { FC, useContext, useEffect, useState } from 'react'
+import { Loader, Plus } from 'lucide-react';
+import { IAcademicSubject, IGroup, IPurposeSubject, IScheduleConflict, ITimeSlot } from '@app/types/types';
 import { observer } from 'mobx-react-lite';
 import { PurposeSubject } from '@entities/purposeSubject/ui/PurposeSubject';
 import { Context } from 'main';
 import { Modal } from '@features/modal/Modal';
-import { CardList } from '@features/cardList/CardList';
-import { AcademicSubject } from '@entities/academicSubject/ui/AcademicSubject';
+import { checkScheduleConflicts } from '@shared/utils/checkConflict';
+import { PurposeAssigments } from '@widgets/purposeAssigments/PurposeAssigments';
 
 interface CalendarProps {
     group: IGroup['id']
 }
 
 export const Calendar: FC<CalendarProps> = observer(({ group }) => {
-    const { timeSlotStore, academicSubjectStore, scheduleStore, purposeSubjectStore } = useContext(Context)
+    const context = useContext(Context)
     const [academicSubjectListModal, setAcademicSubjectListModal] = useState<boolean>(false)
+    const [accessiblAcademicSubject, setAccessiblAcademicSubject] = useState<IAcademicSubject[]>([])
+    const [notAccessiblAcademicSubject, setNotAccessiblAcademicSubject] = useState<IAcademicSubject[]>([])
+    const [notAccessReasonList, setNotAccessReasonList] = useState<IScheduleConflict[]>([])
     const [selectedTimeSlot, setSelectedTimeSlot] = useState<ITimeSlot>()
+    const [loader, setLoader] = useState<boolean>(false)
+
+    useEffect(() => {
+        (async () => {
+            setLoader(true)
+            if (selectedTimeSlot) {
+                setAccessiblAcademicSubject([])
+                setNotAccessiblAcademicSubject([])
+                const accessList: IAcademicSubject[] = []
+                const notAccessList: IAcademicSubject[] = []
+                const notAccessReason: IScheduleConflict[] = []
+                for (let a of context.academicSubjectStore.groupAcademicSubjects) {
+                    const conflict = await checkScheduleConflicts(a, selectedTimeSlot, context)
+                    if (conflict.length === 0) {
+                        accessList.push(a)
+                    } else {
+                        notAccessList.push(a)
+                        conflict.map(c => {
+                            notAccessReason.push(c)
+                        })
+                    }
+                }
+                setAccessiblAcademicSubject(accessList)
+                setNotAccessiblAcademicSubject(notAccessList)
+                setNotAccessReasonList(notAccessReason)
+            }
+            setLoader(false)
+        })()
+    }, [selectedTimeSlot])
 
     const handleSlotClick = (timeSlot: ITimeSlot, event: IPurposeSubject[], isSubgroup: boolean) => {
         if (event[0]?.type === 'full' && !isSubgroup) return
@@ -33,7 +65,7 @@ export const Calendar: FC<CalendarProps> = observer(({ group }) => {
                 <thead>
                     <tr className='bg-gray-50 p-4'>
                         <th className="border border-gray-300 px-4 py-2">№ пары</th>
-                        {timeSlotStore.days.filter(d => d.id < scheduleStore.currentScheduleType + 1).map((day) => (
+                        {context.timeSlotStore.days.filter(d => d.id < context.scheduleStore.currentScheduleType + 1).map((day) => (
                             <th key={day.id} className="border font-semibold text-center">
                                 {day.day}
                             </th>
@@ -46,11 +78,11 @@ export const Calendar: FC<CalendarProps> = observer(({ group }) => {
                             <th className="bg-gray-50 p-4 border border-gray-200">
                                 <p className="text-center text-sm text-gray-500">{index + 1} пара</p>
                             </th>
-                            {timeSlotStore.timeSlots.filter(d => d.numberOfSubject === index + 1 && d.dayOfWeek < scheduleStore.currentScheduleType + 1)
+                            {context.timeSlotStore.timeSlots.filter(d => d.numberOfSubject === index + 1 && d.dayOfWeek < context.scheduleStore.currentScheduleType + 1)
                                 .sort((a, b) => (a.numberOfSubject - b.numberOfSubject)).map((slot) => {
-                                    const event = purposeSubjectStore.groupPurposeSubjects.filter(p => p.slotId === slot.id)
+                                    const event = context.purposeSubjectStore.groupPurposeSubjects.filter(p => p.slotId === slot.id)
                                     let isSubgroup = false
-                                    if (academicSubjectStore.groupAcademicSubjects.find(a => a.id === event[0]?.subjectId)?.numberOfSubgroup) {
+                                    if (context.academicSubjectStore.groupAcademicSubjects.find(a => a.id === event[0]?.subjectId)?.numberOfSubgroup) {
                                         isSubgroup = true
                                     }
                                     return (
@@ -86,31 +118,17 @@ export const Calendar: FC<CalendarProps> = observer(({ group }) => {
                 title={'Назначения'}
                 size='big'
             >
-                <h2 className='font mt-3 mb-7'>Доступные пары</h2>
-                <CardList>
-                    {academicSubjectStore.groupAcademicSubjects.map((academicSubject) => {
-                        return (
-                            <AcademicSubject
-                                key={academicSubject.id}
-                                academicSubject={academicSubject}
-                                openPurposeForm={true}
-                                timeSlot={selectedTimeSlot}
-                            />)
-                    })}
-                </CardList>
-                <h2 className='mt-3 mb-7'>Недоступные пары</h2>
-                <CardList>
-                    {academicSubjectStore.groupAcademicSubjects.map((academicSubject) => {
-                        return (
-                            <AcademicSubject
-                                key={academicSubject.id}
-                                academicSubject={academicSubject}
-                                openPurposeForm={true}
-                                timeSlot={selectedTimeSlot}
-                            />)
-                    }
-                    )}
-                </CardList>
+                {loader ?
+                    <Loader />
+                    :
+                    <PurposeAssigments
+                        selectedTimeSlot={selectedTimeSlot!}
+                        accessiblAcademicSubject={accessiblAcademicSubject}
+                        notAccessiblAcademicSubject={notAccessiblAcademicSubject}
+                        notAccessReasonList={notAccessReasonList}
+                    />
+                }
+
             </Modal>
         </>
     )

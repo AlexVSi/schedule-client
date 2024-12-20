@@ -31,7 +31,7 @@ export const PurposeForm: FC<PurposeFormProps> = ({ academicSubject, closeModal,
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
-        if (!formData.subjectId || !formData.classroomId || !formData.slotId) return
+        if (!formData.subjectId || (!formData.classroomId && !formData.isRemotely) || !formData.slotId) return
         try {
             purposeSubjectStore.add(formData)
             closeModal(true)
@@ -67,6 +67,34 @@ export const PurposeForm: FC<PurposeFormProps> = ({ academicSubject, closeModal,
                         </div>
                     </Radio>
                 ))}
+            </RadioGroup>
+            <RadioGroup value={formData.isRemotely} onChange={(val) => setFormData({ ...formData, isRemotely: val })} aria-label="Server size" className="space-y-2">
+                <p>Формат проведения</p>
+                    <Radio
+                        key={0}
+                        value={false}
+                        className="group relative flex cursor-pointer rounded-lg bg-white/5 py-4 px-5 shadow-md transition data-[checked]:bg-white/10"
+                    >
+                        <div className="flex w-full items-center justify-between">
+                            <div className="text-sm">
+                                <p className="font-semibold ">Очно</p>
+                            </div>
+                            <CheckIcon className="size-6 opacity-0 transition group-data-[checked]:opacity-100 " />
+                        </div>
+                    </Radio>
+
+                    <Radio
+                        key={1}
+                        value={true}
+                        className="group relative flex cursor-pointer rounded-lg bg-white/5 py-4 px-5 shadow-md transition data-[checked]:bg-white/10"
+                    >
+                        <div className="flex w-full items-center justify-between">
+                            <div className="text-sm">
+                                <p className="font-semibold ">Дистанционно</p>
+                            </div>
+                            <CheckIcon className="size-6 opacity-0 transition group-data-[checked]:opacity-100 " />
+                        </div>
+                    </Radio>
             </RadioGroup>
             <div className="flex space-x-4">
                 <Button

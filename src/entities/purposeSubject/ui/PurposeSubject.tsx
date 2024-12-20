@@ -60,7 +60,9 @@ export const PurposeSubject: FC<PurposeSubjectProps> = ({ purpose }) => {
                 {academicSubject?.numberOfSubgroup === 2 && '(II подгруппа)'}
                 <div className="text-xs">Аудитория {classroom?.name}</div>
                 {timeSlot && <div className="text-xs mt-1 font-medium">
-                    {format(timeSlot?.startTime, 'HH:mm')} - {format(timeSlot?.endTime, 'HH:mm')}
+                    {`${String(new Date(timeSlot.startTime).getUTCHours()).padStart(2, '0')}:${String(new Date(timeSlot.startTime).getUTCMinutes()).padStart(2, '0')}
+                    –
+                    ${String(new Date(timeSlot.endTime).getUTCHours()).padStart(2, '0')}:${String(new Date(timeSlot.endTime).getUTCMinutes()).padStart(2, '0')}`}
                 </div>}
             </div>
 
