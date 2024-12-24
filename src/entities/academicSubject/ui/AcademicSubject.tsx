@@ -1,16 +1,13 @@
 import React, { FC, useContext, useEffect, useState } from 'react'
-import { IAcademicSubject, IClassroom, ITimeSlot } from '@app/types/types'
+import { IAcademicSubject, IClassroom } from '@app/types/types'
 import { Context } from 'main'
 import { Card } from '@features/card/Card'
 import { Modal } from '@features/modal/Modal'
 import { AcademicSubjectForm } from '@widgets/academicSubjectForm/AcademicSubjectForm'
 import { ConfirmAction } from '@widgets/confirmAction/ConfirmAction'
-import { PurposeForm } from '@widgets/purposeForm/PurposeForm'
 
 interface AcademicSubjectProps {
     academicSubject: IAcademicSubject
-    openPurposeForm?: boolean
-    timeSlot?: ITimeSlot
 }
 
 interface IAcademicSubjectInfo {
@@ -19,11 +16,10 @@ interface IAcademicSubjectInfo {
     classrooms: IClassroom[] | undefined;
 }
 
-export const AcademicSubject: FC<AcademicSubjectProps> = ({ academicSubject, openPurposeForm = false, timeSlot }) => {
+export const AcademicSubject: FC<AcademicSubjectProps> = ({ academicSubject }) => {
     const { classroomStore, subjectStore, teacherStore, academicSubjectStore } = useContext(Context)
     const [academicSubjectFormModal, setAcademicSubjectFormModal] = useState<boolean>(false)
     const [academicSubjectConfirmAction, setAcademicSubjectConfirmAction] = useState<boolean>(false)
-    const [purposeFormModal, setPurposeFormModal] = useState<boolean>(false)
     const [classrooms, setClassrooms] = useState<IClassroom[]>()
     const [academicSubjectInfo, setAcademicSubjectInfo] = useState<IAcademicSubjectInfo>({
         subject: '',
@@ -60,7 +56,6 @@ export const AcademicSubject: FC<AcademicSubjectProps> = ({ academicSubject, ope
                     e?.stopPropagation()
                     setAcademicSubjectConfirmAction(true)}
                 }
-                onCLick={() => setPurposeFormModal(true)}
             >
             </Card>
             <Modal
@@ -92,19 +87,6 @@ export const AcademicSubject: FC<AcademicSubjectProps> = ({ academicSubject, ope
                     onClickCancle={() => setAcademicSubjectConfirmAction(false)}
                 />
             </Modal>
-
-            {openPurposeForm && timeSlot && <Modal
-                isOpen={purposeFormModal}
-                onClose={() => setPurposeFormModal(false)}
-                title={'Событие'}
-            >
-                <PurposeForm
-                    academicSubject={academicSubject}
-                    closeModal={() => setPurposeFormModal(false)}
-                    classrooms={classrooms ? classrooms : []}
-                    timeSlot={timeSlot}
-                />
-            </Modal>}
         </>
     )
 }

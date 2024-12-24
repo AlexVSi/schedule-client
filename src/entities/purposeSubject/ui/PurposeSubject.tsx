@@ -1,6 +1,5 @@
 import React, { FC, useContext, useEffect, useState } from 'react'
 import { Context } from 'main';
-import { format } from 'date-fns';
 import { IPurposeSubject, ITimeSlot } from '@app/types/types';
 import { Modal } from '@features/modal/Modal';
 import { ConfirmAction } from '@widgets/confirmAction/ConfirmAction';

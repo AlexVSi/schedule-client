@@ -1,12 +1,12 @@
 import { FC, useContext, useEffect, useState } from 'react'
 import { Loader, Plus } from 'lucide-react';
-import { IAcademicSubject, IGroup, IPurposeSubject, IScheduleConflict, ITimeSlot } from '@app/types/types';
+import { IAcademicSubject, IAccessPurposeType, IClassroom, IGroup, IPurposeSubject, IScheduleConflict, ITimeSlot } from '@app/types/types';
 import { observer } from 'mobx-react-lite';
 import { PurposeSubject } from '@entities/purposeSubject/ui/PurposeSubject';
 import { Context } from 'main';
 import { Modal } from '@features/modal/Modal';
 import { checkScheduleConflicts } from '@shared/utils/checkConflict';
-import { PurposeAssigments } from '@widgets/purposeAssigments/PurposeAssigments';
+import { PurposeList } from '@widgets/purposeList/PurposeList';
 
 interface CalendarProps {
     group: IGroup['id']
@@ -15,9 +15,8 @@ interface CalendarProps {
 export const Calendar: FC<CalendarProps> = observer(({ group }) => {
     const context = useContext(Context)
     const [academicSubjectListModal, setAcademicSubjectListModal] = useState<boolean>(false)
-    const [accessiblAcademicSubject, setAccessiblAcademicSubject] = useState<IAcademicSubject[]>([])
-    const [notAccessiblAcademicSubject, setNotAccessiblAcademicSubject] = useState<IAcademicSubject[]>([])
-    const [notAccessReasonList, setNotAccessReasonList] = useState<IScheduleConflict[]>([])
+    const [accessiblAcademicSubject, setAccessiblAcademicSubject] = useState<IAccessPurposeType[]>([])
+    const [notAccessiblAcademicSubject, setNotAccessiblAcademicSubject] = useState<IAccessPurposeType[]>([])
     const [selectedTimeSlot, setSelectedTimeSlot] = useState<ITimeSlot | null>()
     const [loader, setLoader] = useState<boolean>(false)
 
@@ -27,27 +26,22 @@ export const Calendar: FC<CalendarProps> = observer(({ group }) => {
             setAccessiblAcademicSubject([])
             setNotAccessiblAcademicSubject([])
             if (selectedTimeSlot) {
-                const accessList: IAcademicSubject[] = []
-                const notAccessList: IAcademicSubject[] = []
-                const notAccessReason: IScheduleConflict[] = []
+                const accessList: IAccessPurposeType[] = []
+                const notAccessList: IAccessPurposeType[] = []
                 for (let a of context.academicSubjectStore.groupAcademicSubjects) {
-                    const conflict = await checkScheduleConflicts(a, selectedTimeSlot, context)
-                    if (conflict.length === 0) {
-                        accessList.push(a)
+                    const assigment = await checkScheduleConflicts(a, selectedTimeSlot, context)
+                    if (assigment.isAccess) {
+                        accessList.push(assigment)
                     } else {
-                        notAccessList.push(a)
-                        conflict.map(c => {
-                            notAccessReason.push(c)
-                        })
+                        notAccessList.push(assigment)
                     }
                 }
                 setAccessiblAcademicSubject(accessList)
                 setNotAccessiblAcademicSubject(notAccessList)
-                setNotAccessReasonList(notAccessReason)
             }
             setLoader(false)
         })()
-    }, [selectedTimeSlot])
+    }, [selectedTimeSlot, context.purposeSubjectStore.groupPurposeSubjects])
 
     useEffect(() => {
         setSelectedTimeSlot(null)
@@ -125,14 +119,13 @@ export const Calendar: FC<CalendarProps> = observer(({ group }) => {
                 {loader ?
                     <Loader />
                     :
-                    <PurposeAssigments
+                    <PurposeList
                         selectedTimeSlot={selectedTimeSlot!}
                         accessiblAcademicSubject={accessiblAcademicSubject}
                         notAccessiblAcademicSubject={notAccessiblAcademicSubject}
-                        notAccessReasonList={notAccessReasonList}
+                        closeModal={() => setAcademicSubjectListModal(false)}
                     />
                 }
-
             </Modal>
         </>
     )

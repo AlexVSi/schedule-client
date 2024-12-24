@@ -89,11 +89,13 @@ export interface ISlotTemplateName {
   display: string;
 }
 
-export type ConflictType = 'TEACHER' | 'CLASSROOM';
-
-export interface IScheduleConflict {
+export interface IAccessPurposeType {
   academicSubjectId: IAcademicSubject['id'];
-  type: ConflictType;
-  message: string;
-  existingEvent?: IPurposeSubject;
+  isAccess: boolean;
+  classrooms: IClassroom[];
+  teacherId: ITeacher['id'];
+  accessTypes: 'full' | 'even' | 'odd';
+  isRemotely: boolean;
+  hours: number;
+  notAccsessReason?: string;
 }

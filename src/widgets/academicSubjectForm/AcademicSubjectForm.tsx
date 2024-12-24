@@ -8,6 +8,7 @@ import { Input } from '@shared/ui/Input';
 import { differenceSets } from '@shared/utils/differenceSets';
 import { CheckIcon } from 'lucide-react';
 import { Context } from 'main';
+import { RadioItem } from '@shared/ui/RadioItem';
 
 interface GroupFormProps {
     academicSubject?: IAcademicSubject
@@ -160,19 +161,12 @@ export const AcademicSubjectForm: FC<GroupFormProps> = ({ academicSubject, close
                     </SelectList>
                     <RadioGroup value={formData.numberOfSubgroup} onChange={(val) => setFormData({ ...formData, numberOfSubgroup: val })} aria-label="Server size" className="space-y-2">
                         <p>Тип группы</p>
-                        {groupType.map(type => (
-                            <Radio
-                                key={type.value}
+                        {groupType.map((type, i) => (
+                            <RadioItem
+                                key={i}
                                 value={type.value}
-                                className="group relative flex cursor-pointer rounded-lg bg-white/5 py-4 px-5 shadow-md transition data-[checked]:bg-white/10"
-                            >
-                                <div className="flex w-full items-center justify-between">
-                                    <div className="text-sm">
-                                        <p className="font-semibold ">{type.type}</p>
-                                    </div>
-                                    <CheckIcon className="size-6 opacity-0 transition group-data-[checked]:opacity-100 " />
-                                </div>
-                            </Radio>
+                                item={type.type}
+                            />
                         ))}
                     </RadioGroup>
 

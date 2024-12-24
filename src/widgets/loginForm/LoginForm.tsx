@@ -9,8 +9,8 @@ interface LoginFormProps {
 
 export const LoginForm: React.FC<LoginFormProps> = observer(({ closeModal }) => {
     const { authStore } = useContext(Context)
-    const [login, setlogin] = useState('');
-    const [password, setPassword] = useState('');
+    const [login, setlogin] = useState('valeria@mail.com');
+    const [password, setPassword] = useState('P@ssw0rd');
     const [error, setError] = useState('');
 
     const handleSubmit = (e: React.FormEvent) => {

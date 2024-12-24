@@ -2,19 +2,21 @@ import React, { FC, useContext, useState } from 'react'
 import { SelectList } from '@features/selectList/SelectList'
 import { Button } from '@shared/ui/Button'
 import { IAcademicSubject, IClassroom, IPurposeSubject, ITimeSlot } from '@app/types/types'
-import { Radio, RadioGroup } from '@headlessui/react'
-import { CheckIcon } from 'lucide-react'
+import { RadioGroup } from '@headlessui/react'
 import { Context } from 'main'
+import Dropdown from '@features/dropdown/Dropdown'
+import { RadioItem } from '@shared/ui/RadioItem'
 
 interface PurposeFormProps {
     academicSubject: IAcademicSubject
-    closeModal: (flag: boolean) => void
     classrooms: IClassroom[]
     timeSlot: ITimeSlot
+    closeModal: (flag: boolean) => void
+    notAccsessReason?: string
 }
 
-export const PurposeForm: FC<PurposeFormProps> = ({ academicSubject, closeModal, classrooms, timeSlot }) => {
-    const { purposeSubjectStore } = useContext(Context)
+export const PurposeForm: FC<PurposeFormProps> = ({ academicSubject, closeModal, classrooms, timeSlot, notAccsessReason }) => {
+    const { subjectStore, purposeSubjectStore, teacherStore } = useContext(Context)
     const [formData, setFormData] = useState<Omit<IPurposeSubject, 'id'>>({
         type: 'full',
         isRemotely: false,
@@ -22,6 +24,8 @@ export const PurposeForm: FC<PurposeFormProps> = ({ academicSubject, closeModal,
         classroomId: 0,
         slotId: timeSlot.id,
     })
+
+    const teacher = teacherStore.teachers.find(t => t.id === academicSubject.teacherId)
 
     const weekTypes = [
         { value: 'full', type: 'Все недели' },
@@ -41,71 +45,58 @@ export const PurposeForm: FC<PurposeFormProps> = ({ academicSubject, closeModal,
     }
 
     const handleSelectionChange = (selectedItems: { id: number; itemLabel: string }[]) => {
-        setFormData({...formData, classroomId: selectedItems[0].id})
+        setFormData({ ...formData, classroomId: selectedItems[0].id })
     }
 
     return (
-        <form className='flex flex-col gap-5' onSubmit={handleSubmit}>
-            <SelectList
-                label='Аудитории'
-                items={classrooms.map(c => { return { id: c.id, itemLabel: c.name } })}
-                onSelectionChange={handleSelectionChange}
-            />
-            <RadioGroup value={formData.type} onChange={(val) => setFormData({ ...formData, type: val })} aria-label="Server size" className="space-y-2">
-                <p>Тип недели</p>
-                {weekTypes.map(type => (
-                    <Radio
-                        key={type.value}
-                        value={type.value}
-                        className="group relative flex cursor-pointer rounded-lg bg-white/5 py-4 px-5 shadow-md transition data-[checked]:bg-white/10"
-                    >
-                        <div className="flex w-full items-center justify-between">
-                            <div className="text-sm">
-                                <p className="font-semibold ">{type.type}</p>
-                            </div>
-                            <CheckIcon className="size-6 opacity-0 transition group-data-[checked]:opacity-100 " />
-                        </div>
-                    </Radio>
-                ))}
-            </RadioGroup>
-            <RadioGroup value={formData.isRemotely} onChange={(val) => setFormData({ ...formData, isRemotely: val })} aria-label="Server size" className="space-y-2">
-                <p>Формат проведения</p>
-                {[
-                    { value: false, format: 'Очно' },
-                    { value: true, format: 'Заочно' }
-                ].map((v, i) => {
-                    return (
-                        <Radio
-                            key={i}
-                            value={v.value}
-                            className="group relative flex cursor-pointer rounded-lg bg-white/5 py-4 px-5 shadow-md transition data-[checked]:bg-white/10"
-                        >
-                            <div className="flex w-full items-center justify-between">
-                                <div className="text-sm">
-                                    <p className="font-semibold ">{v.format}</p>
-                                </div>
-                                <CheckIcon className="size-6 opacity-0 transition group-data-[checked]:opacity-100 " />
-                            </div>
-                        </Radio>
-                    )
-                })}
-            </RadioGroup>
-            <div className="flex space-x-4">
-                <Button
-                    type="submit"
-                    className="flex-1"
-                >
-                    Сохранить
-                </Button>
-                <Button
-                    type="reset"
-                    variant="secondary"
-                    className="flex-1"
-                    onClick={() => closeModal(false)}
-                >
-                    Отменить
-                </Button>
+        <form className='flex flex-col gap-1 justify-between border border-gray-200 rounded-xl p-5' onSubmit={handleSubmit}>
+            {notAccsessReason && <p>{notAccsessReason}</p>}
+            <div className='flex flex-col gap-1'>
+                <p className='font-medium'>{subjectStore.subjects.find(s => s.id === academicSubject.name)?.name}</p>
+                <p>{`${teacher?.lastname} ${teacher?.firstname[0]}.${teacher?.surname[0]}.`}</p>
+                <p>Часов в неделю: {academicSubject.countHoursPerWeek}</p>
+                <p>{academicSubject.numberOfSubgroup ? `${academicSubject.numberOfSubgroup} подгруппа` : 'Вся группа'}</p>
             </div>
+            <Dropdown title='Развернуть'>
+                <SelectList
+                    label='Аудитории'
+                    items={classrooms.map(c => { return { id: c.id, itemLabel: c.name } })}
+                    onSelectionChange={handleSelectionChange}
+                />
+                <p>Тип недели</p>
+                <RadioGroup value={formData.type} onChange={(val) => setFormData({ ...formData, type: val })} aria-label="Server size" className="space-y-2">
+                    {weekTypes.map((type, i) => (
+                        <RadioItem
+                            key={i}
+                            value={type.value}
+                            item={type.type}
+                        />
+                    ))}
+                </RadioGroup>
+                <p>Формат проведения</p>
+                <RadioGroup value={formData.isRemotely} onChange={(val) => setFormData({ ...formData, isRemotely: val })} aria-label="Server size" className="space-y-2">
+                    {[
+                        { value: false, format: 'Очно' },
+                        { value: true, format: 'Заочно' }
+                    ].map((v, i) => {
+                        return (
+                            <RadioItem
+                                key={i}
+                                value={v.value}
+                                item={v.format}
+                            />
+                        )
+                    })}
+                </RadioGroup>
+                <div className="flex space-x-4 mt-2">
+                    <Button
+                        type="submit"
+                        className="flex-1"
+                    >
+                        Назначить
+                    </Button>
+                </div>
+            </Dropdown>
         </form>
     )
 }
