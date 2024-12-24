@@ -1,10 +1,10 @@
 import React, { FC, useContext, useState } from 'react'
 import { ISchedule } from '@app/types/types';
 import { Input } from '@shared/ui/Input';
-import { Radio, RadioGroup } from '@headlessui/react';
-import { CheckIcon } from 'lucide-react';
+import { RadioGroup } from '@headlessui/react';
 import { Button } from '@shared/ui/Button';
 import { Context } from 'main';
+import { RadioItem } from '@shared/ui/RadioItem';
 
 interface ScheduleFormProps {
     schedule?: ISchedule
@@ -47,7 +47,7 @@ export const ScheduleForm: FC<ScheduleFormProps> = ({ schedule, closeModal }) =>
     }
 
     return (
-        <form action="" onSubmit={handleSubmit} className='flex flex-col gap-3 '>
+        <form action="" onSubmit={handleSubmit} className='flex flex-col gap-3'>
             <Input
                 label='Название'
                 type="text"
@@ -64,18 +64,11 @@ export const ScheduleForm: FC<ScheduleFormProps> = ({ schedule, closeModal }) =>
                     { value: false, content: 'Нет' },
                 ].map((v, i) => {
                     return (
-                        <Radio
+                        <RadioItem
                             key={i}
                             value={v.value}
-                            className="group relative flex cursor-pointer rounded-lg bg-white/5 py-2 px-5 shadow-md transition data-[checked]:bg-white/10"
-                        >
-                            <div className="flex w-full items-center justify-between">
-                                <div className="text-sm">
-                                    <p className="font-semibold ">{v.content}</p>
-                                </div>
-                                <CheckIcon className="size-6 opacity-0 transition group-data-[checked]:opacity-100 " />
-                            </div>
-                        </Radio>
+                            item={v.content}
+                        />
                     )
                 })}
             </RadioGroup>
