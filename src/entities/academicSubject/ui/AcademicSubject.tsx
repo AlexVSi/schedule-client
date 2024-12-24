@@ -52,12 +52,12 @@ export const AcademicSubject: FC<AcademicSubjectProps> = ({ academicSubject, ope
                     academicSubject.numberOfSubgroup ? `${academicSubject.numberOfSubgroup} подгруппа` : 'Вся группа'
                 ]}
                 onClickEdit={(e) => {
-                    e.stopPropagation()
+                    e?.stopPropagation()
                     setAcademicSubjectFormModal(true)
                 }
                 }
                 onClickDelete={(e) => {
-                    e.stopPropagation()
+                    e?.stopPropagation()
                     setAcademicSubjectConfirmAction(true)}
                 }
                 onCLick={() => setPurposeFormModal(true)}
