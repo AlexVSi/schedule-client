@@ -8,7 +8,7 @@ export async function checkScheduleConflicts(assigment: IAcademicSubject, timeSl
 
     if (allTimeSlotPurposes) {
         for (let p of allTimeSlotPurposes) {
-            const a = await context.academicSubjectStore.fetchAllById(p.subjectId)
+            const a = await context.academicSubjectStore.fetchById(p.subjectId)
             const t = context.teacherStore.teachers.find(t => t.id === a?.teacherId)
             if (a?.teacherId === assigment?.teacherId) {
                 conflicts.push({

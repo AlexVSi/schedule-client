@@ -15,7 +15,7 @@ export const AcademicSubjects = observer(() => {
     const [academicSubjectFormModal, setAcademicSubjectFormModal] = useState<boolean>(false)
 
     useEffect(() => {
-        if (selectedGroup) {
+        if (selectedGroup && scheduleStore.currentScheduleId) {
             (async () => {
                 await academicSubjectStore.fetchAllByGroupAndSchedule(selectedGroup, scheduleStore.currentScheduleId)
             })()

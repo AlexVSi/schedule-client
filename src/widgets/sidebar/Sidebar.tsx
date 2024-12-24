@@ -18,6 +18,7 @@ import { UserProfile } from '@widgets/userProfile/UserProfile';
 import { AdminManagement } from '@widgets/adminManagement/AdminManagament';
 import { Context } from 'main';
 import { ScheduleForm } from '@widgets/scheduleForm/ScheduleForm';
+import { ScheduleModal } from '@widgets/scheduleModal/ScheduleModal';
 
 export const Sidebar = observer(() => {
     const { authStore } = useContext(Context)
@@ -140,10 +141,10 @@ export const Sidebar = observer(() => {
             <Modal
                 isOpen={showScheduleModal}
                 onClose={() => setShowScheduleModal(false)}
-                title="Выбор расписания"
+                title="Расписания"
                 size='big'
             >
-                <ScheduleForm />
+                <ScheduleModal />
             </Modal>
 
             <Modal

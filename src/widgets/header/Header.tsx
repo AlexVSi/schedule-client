@@ -1,7 +1,11 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { GraduationCap } from 'lucide-react'
+import { Context } from 'main'
+import { observer } from 'mobx-react-lite'
 
-export const Header: React.FC = () => {
+export const Header: React.FC = observer(() => {
+    const { scheduleStore } = useContext(Context)
+
     return (
         <header>
             <nav className="bg-white shadow-lg border-b border-blue-100 top-0 left-0 right-0 z-10">
@@ -13,10 +17,10 @@ export const Header: React.FC = () => {
                         </span>
                     </div>
                     <span>
-                        2024-2025 год 1 семестр
+                    {scheduleStore.schedules.find(s => s.id === scheduleStore.currentScheduleId)?.name}
                     </span>
                 </div>
             </nav>
         </header>
     )
-}
+})

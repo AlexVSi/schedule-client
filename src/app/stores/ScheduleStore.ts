@@ -5,9 +5,8 @@ import { makeAutoObservable } from "mobx";
 
 export default class ScheduleStore {
     schedules = [] as ISchedule[];
-    currentScheduleId = 1 as ISchedule['id'];
-    currentScheduleType = 5
-
+    currentScheduleId = 0 as ISchedule['id'];
+    
     constructor() {
         makeAutoObservable(this)
     }
@@ -18,6 +17,11 @@ export default class ScheduleStore {
 
     setCurrentScheduleId(currentScheduleId: ISchedule['id']) {
         this.currentScheduleId = currentScheduleId
+        localStorage.setItem('scheduleId', String(currentScheduleId))
+    }
+
+    addSchedule(schedule: ISchedule) {
+        this.schedules = [...this.schedules, schedule]
     }
 
     async fetchAllSchedules() {
@@ -29,9 +33,21 @@ export default class ScheduleStore {
         }
     }
 
+    async fetchOnlyPublic() {
+        try {
+            const responce = await ScheduleService.getOnlyPublic()
+            this.setSchedules(responce.data.schedule)
+            this.setCurrentScheduleId(responce.data.schedule[0].id)
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
     async add(body: Omit<ISchedule, 'id'>) {
         try {
-            await ScheduleService.add(body)
+            const responce = await ScheduleService.add(body)
+            this.addSchedule({ id: responce.data.id, ...body })
+            return responce.data.id
         } catch (e) {
             console.log(e);
         }
@@ -45,9 +61,18 @@ export default class ScheduleStore {
         }
     }
 
+    async setPublic(scheduleId: ISchedule['id'], format: ISchedule['isPublic']) {
+        try {
+            await ScheduleService.setPublic(scheduleId, format)
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
     async remove(id: ISchedule['id']) {
         try {
             await ScheduleService.remove(id)
+            this.schedules = this.schedules.filter(s => s.id !== id)
         } catch (e) {
             console.log(e);
         }

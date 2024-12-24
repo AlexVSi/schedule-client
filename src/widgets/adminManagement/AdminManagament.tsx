@@ -43,6 +43,10 @@ export const AdminManagement = observer(() => {
   };
 
   return (
+    <></>
+  )
+
+  return (
     <div className="space-y-6">
       <form onSubmit={editingId ? handleUpdate : handleSubmit} className="space-y-4">
         <div>

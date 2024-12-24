@@ -10,7 +10,6 @@ export interface ITeacher {
   lastname: string;
   firstname: string;
   surname: string;
-  // busyTimes: IBusyTime['id'][];
 }
 
 export interface IBusyTime {
@@ -83,6 +82,11 @@ export interface ITimeSlot {
   dayOfWeek: number;
   startTime: Date;
   endTime: Date;
+}
+
+export interface ISlotTemplateName {
+  name: string;
+  display: string;
 }
 
 export type ConflictType = 'TEACHER' | 'CLASSROOM';

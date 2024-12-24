@@ -1,5 +1,5 @@
 import { $api } from "@shared/http";
-import { ISchedule, ITimeSlot } from "@app/types/types";
+import { ISchedule, ISlotTemplateName, ITimeSlot } from "@app/types/types";
 import { AxiosResponse } from "axios";
 
 export default class TimeSlotService {
@@ -21,5 +21,13 @@ export default class TimeSlotService {
 
     static async remove(id: ITimeSlot['id']) {
         await $api.delete(`time-slots/remove/${id}`)
+    }
+
+    static async getTemplatesNames(): Promise<AxiosResponse<{ names: ISlotTemplateName[] }>> {
+        return await $api.get<{ names: ISlotTemplateName[] }>(`time-slots/templates/get-names`)
+    }
+
+    static async initTemplate(name: ISlotTemplateName['name'], scheduleId: ISchedule['id']) {
+        return await $api.post<ITimeSlot['id']>(`time-slots/templates/init/${name}/${scheduleId}`)
     }
 }

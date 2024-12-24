@@ -1,5 +1,5 @@
 import { makeAutoObservable } from 'mobx';
-import { ISchedule, ITimeSlot } from '@app/types/types';
+import { ISchedule, ISlotTemplateName, ITimeSlot } from '@app/types/types';
 import TimeSlotService from '@entities/timeSlot/api/TimeSlot.service';
 
 
@@ -45,7 +45,6 @@ export default class TimeSlotStore {
     async add(body: Omit<ITimeSlot, 'id'>) {
         try {
             await TimeSlotService.add(body)
-            // this.fetchAllTimeSlots()
         } catch (e) {
             console.log(e);
             console.log(body);
@@ -55,7 +54,6 @@ export default class TimeSlotStore {
     async edit(body: Partial<ITimeSlot>) {
         try {
             await TimeSlotService.edit(body)
-            // this.fetchAllTimeSlots()
         } catch (e) {
             console.log(e);
         }
@@ -65,6 +63,23 @@ export default class TimeSlotStore {
         try {
             await TimeSlotService.remove(id)
             this.setTimeSlots(this.timeSlots.filter(t => t.id !== id))
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    async fetchTemplatesNames() {
+        try {
+            const responce = await TimeSlotService.getTemplatesNames()
+            return responce.data.names
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    async initTemplate(name: ISlotTemplateName['name'], scheduleId: ISchedule['id']) {
+        try {
+            await TimeSlotService.initTemplate(name, scheduleId)
         } catch (e) {
             console.log(e);
         }
