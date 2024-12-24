@@ -58,7 +58,8 @@ export const PurposeSubject: FC<PurposeSubjectProps> = ({ purpose }) => {
                 <div className="text-xs">{`${teacher?.lastname} ${teacher?.firstname[0]}.${teacher?.surname[0]}.`}</div>
                 {academicSubject?.numberOfSubgroup === 1 && '(I подгруппа)'}
                 {academicSubject?.numberOfSubgroup === 2 && '(II подгруппа)'}
-                <div className="text-xs">Аудитория {classroom?.name}</div>
+                {classroom && <div className="text-xs">Аудитория {classroom.name}</div>}
+                {purpose.isRemotely && <div className="text-xs">(Дистанционно)</div>}
                 {timeSlot && <div className="text-xs mt-1 font-medium">
                     {`${String(new Date(timeSlot.startTime).getUTCHours()).padStart(2, '0')}:${String(new Date(timeSlot.startTime).getUTCMinutes()).padStart(2, '0')}
                     –

@@ -5,7 +5,7 @@ import { Calendar } from '@widgets/calendar/Calendar';
 import { IGroup, IPurposeSubject } from '@app/types/types';
 
 export const Planner = observer(() => {
-    const { scheduleStore, groupStore, academicSubjectStore, purposeSubjectStore, subjectStore } = useContext(Context)
+    const { scheduleStore, groupStore, academicSubjectStore, purposeSubjectStore, subjectStore, authStore } = useContext(Context)
     const [selectedGroup, setSelectedGroup] = useState<IGroup['id']>(groupStore.currentGroup);
     const [checkCountHoursPerWeek, setCheckCountHoursPerWeek] = useState<{ id: number, shortage: number }[]>([])
 
@@ -38,7 +38,6 @@ export const Planner = observer(() => {
             }
             setCheckCountHoursPerWeek(luckOfHours)
         })()
-        console.log('assds')
     }, [purposeSubjectStore.groupPurposeSubjects])
 
     return (
@@ -66,13 +65,18 @@ export const Planner = observer(() => {
                     group={selectedGroup}
                 />}
             <div>
-                {checkCountHoursPerWeek.length === 0 ?
-                    <h2 className='text-xl my-5 green-500 text-green-500'>Замечаний нет</h2> :
-                    <h2 className='text-xl my-5'>Замечания</h2>
+                {authStore.isAuth &&
+                    <>
+                        {
+                            checkCountHoursPerWeek.length === 0 ?
+                                <h2 className='text-xl my-5 green-500 text-green-500'>Замечаний нет</h2> :
+                                <h2 className='text-xl my-5'>Замечания</h2>
+                        }
+                        {checkCountHoursPerWeek.map((h, i) => (
+                            <p key={i}>Не хватает {h.shortage} {h.shortage === 1 ? 'часа' : 'часов'} для предмета «{subjectStore.subjects.find(s => s.id === h.id)?.name}»</p>
+                        ))}
+                    </>
                 }
-                {checkCountHoursPerWeek.map((h, i) => (
-                    <p key={i}>Не хватает {h.shortage} {h.shortage === 1 ? 'часа' : 'часов'} для предмета «{subjectStore.subjects.find(s => s.id === h.id)?.name}»</p>
-                ))}
             </div>
         </>
     )

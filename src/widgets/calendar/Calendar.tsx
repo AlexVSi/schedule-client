@@ -18,15 +18,15 @@ export const Calendar: FC<CalendarProps> = observer(({ group }) => {
     const [accessiblAcademicSubject, setAccessiblAcademicSubject] = useState<IAcademicSubject[]>([])
     const [notAccessiblAcademicSubject, setNotAccessiblAcademicSubject] = useState<IAcademicSubject[]>([])
     const [notAccessReasonList, setNotAccessReasonList] = useState<IScheduleConflict[]>([])
-    const [selectedTimeSlot, setSelectedTimeSlot] = useState<ITimeSlot>()
+    const [selectedTimeSlot, setSelectedTimeSlot] = useState<ITimeSlot | null>()
     const [loader, setLoader] = useState<boolean>(false)
 
     useEffect(() => {
         (async () => {
             setLoader(true)
+            setAccessiblAcademicSubject([])
+            setNotAccessiblAcademicSubject([])
             if (selectedTimeSlot) {
-                setAccessiblAcademicSubject([])
-                setNotAccessiblAcademicSubject([])
                 const accessList: IAcademicSubject[] = []
                 const notAccessList: IAcademicSubject[] = []
                 const notAccessReason: IScheduleConflict[] = []
@@ -49,6 +49,10 @@ export const Calendar: FC<CalendarProps> = observer(({ group }) => {
         })()
     }, [selectedTimeSlot])
 
+    useEffect(() => {
+        setSelectedTimeSlot(null)
+    }, [group])
+
     const handleSlotClick = (timeSlot: ITimeSlot, event: IPurposeSubject[], isSubgroup: boolean) => {
         if (event[0]?.type === 'full' && !isSubgroup) return
         if (!group) {
@@ -65,7 +69,7 @@ export const Calendar: FC<CalendarProps> = observer(({ group }) => {
                 <thead>
                     <tr className='bg-gray-50 p-4'>
                         <th className="border border-gray-300 px-4 py-2">№ пары</th>
-                        {context.timeSlotStore.days.filter(d => d.id < context.scheduleStore.currentScheduleType + 1).map((day) => (
+                        {context.timeSlotStore.days.map((day) => (
                             <th key={day.id} className="border font-semibold text-center">
                                 {day.day}
                             </th>
@@ -78,7 +82,7 @@ export const Calendar: FC<CalendarProps> = observer(({ group }) => {
                             <th className="bg-gray-50 p-4 border border-gray-200">
                                 <p className="text-center text-sm text-gray-500">{index + 1} пара</p>
                             </th>
-                            {context.timeSlotStore.timeSlots.filter(d => d.numberOfSubject === index + 1 && d.dayOfWeek < context.scheduleStore.currentScheduleType + 1)
+                            {context.timeSlotStore.timeSlots.filter(d => d.numberOfSubject === index + 1)
                                 .sort((a, b) => (a.numberOfSubject - b.numberOfSubject)).map((slot) => {
                                     const event = context.purposeSubjectStore.groupPurposeSubjects.filter(p => p.slotId === slot.id)
                                     let isSubgroup = false

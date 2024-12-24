@@ -27,7 +27,6 @@ export const Button: React.FC<ButtonProps> = ({ className, variant = 'primary', 
     };
     return (
         <button
-            // ref={ref}
             className={twMerge(
                 baseStyles,
                 variants[variant],

@@ -70,31 +70,25 @@ export const PurposeForm: FC<PurposeFormProps> = ({ academicSubject, closeModal,
             </RadioGroup>
             <RadioGroup value={formData.isRemotely} onChange={(val) => setFormData({ ...formData, isRemotely: val })} aria-label="Server size" className="space-y-2">
                 <p>Формат проведения</p>
-                    <Radio
-                        key={0}
-                        value={false}
-                        className="group relative flex cursor-pointer rounded-lg bg-white/5 py-4 px-5 shadow-md transition data-[checked]:bg-white/10"
-                    >
-                        <div className="flex w-full items-center justify-between">
-                            <div className="text-sm">
-                                <p className="font-semibold ">Очно</p>
+                {[
+                    { value: false, format: 'Очно' },
+                    { value: true, format: 'Заочно' }
+                ].map((v, i) => {
+                    return (
+                        <Radio
+                            key={i}
+                            value={v.value}
+                            className="group relative flex cursor-pointer rounded-lg bg-white/5 py-4 px-5 shadow-md transition data-[checked]:bg-white/10"
+                        >
+                            <div className="flex w-full items-center justify-between">
+                                <div className="text-sm">
+                                    <p className="font-semibold ">{v.format}</p>
+                                </div>
+                                <CheckIcon className="size-6 opacity-0 transition group-data-[checked]:opacity-100 " />
                             </div>
-                            <CheckIcon className="size-6 opacity-0 transition group-data-[checked]:opacity-100 " />
-                        </div>
-                    </Radio>
-
-                    <Radio
-                        key={1}
-                        value={true}
-                        className="group relative flex cursor-pointer rounded-lg bg-white/5 py-4 px-5 shadow-md transition data-[checked]:bg-white/10"
-                    >
-                        <div className="flex w-full items-center justify-between">
-                            <div className="text-sm">
-                                <p className="font-semibold ">Дистанционно</p>
-                            </div>
-                            <CheckIcon className="size-6 opacity-0 transition group-data-[checked]:opacity-100 " />
-                        </div>
-                    </Radio>
+                        </Radio>
+                    )
+                })}
             </RadioGroup>
             <div className="flex space-x-4">
                 <Button

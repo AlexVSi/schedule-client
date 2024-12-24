@@ -39,14 +39,32 @@ const timeSlotStore = new TimeSlotStore()
 const authStore = new AuthStore()
 
 export const Context = createContext<ContextState>({
-    scheduleStore, groupStore, teacherStore, specialityStore, classroomStore, subjectStore, academicSubjectStore, purposeSubjectStore, timeSlotStore, authStore
+    scheduleStore,
+    groupStore,
+    teacherStore,
+    specialityStore,
+    classroomStore,
+    subjectStore,
+    academicSubjectStore,
+    purposeSubjectStore,
+    timeSlotStore,
+    authStore
 })
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
 
     <React.StrictMode>
         <Context.Provider value={{
-            scheduleStore, groupStore, teacherStore, specialityStore, classroomStore, subjectStore, academicSubjectStore, purposeSubjectStore, timeSlotStore, authStore
+            scheduleStore,
+            groupStore,
+            teacherStore,
+            specialityStore,
+            classroomStore,
+            subjectStore,
+            academicSubjectStore,
+            purposeSubjectStore,
+            timeSlotStore,
+            authStore
         }}>
             <BrowserRouter>
                 <App />
