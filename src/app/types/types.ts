@@ -60,18 +60,14 @@ export interface IAcademicSubject {
   numberOfSubgroup: number;
 }
 
-export enum TypeSubject {
-  full = 0,
-  even = 1,
-  odd  = 2,
-}
+export type TypeSubject = 'full' | 'even' | 'odd';
 
 export interface IPurposeSubject {
   id: number;
-  type: 'full' | 'even' | 'odd';
-  isRemotely: boolean
+  type: TypeSubject;
+  isRemotely: boolean;
   subjectId: IAcademicSubject['id'];
-  classroomId?: IClassroom['id']
+  classroomId?: IClassroom['id'];
   slotId: ITimeSlot['id'];
 }
 
@@ -94,7 +90,7 @@ export interface IAccessPurposeType {
   isAccess: boolean;
   classrooms: IClassroom[];
   teacherId: ITeacher['id'];
-  accessTypes: 'full' | 'even' | 'odd';
+  accessTypes: TypeSubject[];
   isRemotely: boolean;
   hours: number;
   notAccsessReason?: string;

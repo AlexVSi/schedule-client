@@ -2,11 +2,10 @@ import React, { FC, useContext, useEffect, useState } from 'react'
 import { IAcademicSubject, IClassroom } from '@app/types/types';
 import { IncorrectSpoiler } from '@features/incorrectSpoiler/IncorrectSpoiler';
 import { SelectList } from '@features/selectList/SelectList';
-import { RadioGroup, Radio } from '@headlessui/react';
+import { RadioGroup } from '@headlessui/react';
 import { Button } from '@shared/ui/Button';
 import { Input } from '@shared/ui/Input';
 import { differenceSets } from '@shared/utils/differenceSets';
-import { CheckIcon } from 'lucide-react';
 import { Context } from 'main';
 import { RadioItem } from '@shared/ui/RadioItem';
 
@@ -48,11 +47,12 @@ export const AcademicSubjectForm: FC<GroupFormProps> = ({ academicSubject, close
     ]
 
     const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
         if (!groupId) {
             alert('Пожалуйста, выберите группу');
+            closeModal(false)
             return;
         }
-        e.preventDefault();
         if (academicSubject?.id) {
             setFormData(formData);
             academicSubjectStore.edit({ id: academicSubject.id, ...formData });

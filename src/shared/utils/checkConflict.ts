@@ -7,7 +7,7 @@ export async function checkScheduleConflicts(assigment: IAcademicSubject, timeSl
         isAccess: true,
         classrooms: [],
         teacherId: assigment.id,
-        accessTypes: 'full',
+        accessTypes: ['full', 'even', 'odd'],
         isRemotely: false,
         hours: assigment.countHoursPerWeek,
         notAccsessReason: '',
@@ -38,10 +38,17 @@ export async function checkScheduleConflicts(assigment: IAcademicSubject, timeSl
                 if (p.type === 'full') {
                     const t = context.teacherStore.teachers.find(t => t.id === a?.teacherId)
                     purpose.isAccess = false
+                    purpose.accessTypes = []
                     purpose.notAccsessReason = `Преподаватель ${t?.lastname} ${t?.firstname[0]}.${t?.surname[0]}. уже занят в это время`
                     return purpose
                 } else {
-                    purpose.accessTypes = p.type === 'even' ? 'odd' : 'even'
+                    purpose.accessTypes = purpose.accessTypes.filter(t => t !== 'full' && t !== p.type)
+                }
+                if (purpose.accessTypes.length === 0) {
+                    const t = context.teacherStore.teachers.find(t => t.id === a?.teacherId)
+                    purpose.isAccess = false
+                    purpose.notAccsessReason = `Преподаватель ${t?.lastname} ${t?.firstname[0]}.${t?.surname[0]}. уже занят в это время`
+                    return purpose
                 }
             }
         }
@@ -81,6 +88,7 @@ export async function checkScheduleConflicts(assigment: IAcademicSubject, timeSl
 
         if (hourCount === purpose.hours) {
             purpose.isAccess = false
+            purpose.accessTypes = []
             purpose.notAccsessReason = 'Для данного предмета учтено необходимое количество часов'
             return purpose
         }

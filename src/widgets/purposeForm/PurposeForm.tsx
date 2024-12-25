@@ -1,7 +1,7 @@
 import React, { FC, useContext, useState } from 'react'
 import { SelectList } from '@features/selectList/SelectList'
 import { Button } from '@shared/ui/Button'
-import { IAcademicSubject, IClassroom, IPurposeSubject, ITimeSlot } from '@app/types/types'
+import { IAcademicSubject, IClassroom, IPurposeSubject, ITimeSlot, TypeSubject } from '@app/types/types'
 import { RadioGroup } from '@headlessui/react'
 import { Context } from 'main'
 import Dropdown from '@features/dropdown/Dropdown'
@@ -12,10 +12,11 @@ interface PurposeFormProps {
     classrooms: IClassroom[]
     timeSlot: ITimeSlot
     closeModal: (flag: boolean) => void
+    accessiblWeeks: TypeSubject[]
     notAccsessReason?: string
 }
 
-export const PurposeForm: FC<PurposeFormProps> = ({ academicSubject, closeModal, classrooms, timeSlot, notAccsessReason }) => {
+export const PurposeForm: FC<PurposeFormProps> = ({ academicSubject, closeModal, classrooms, timeSlot, accessiblWeeks, notAccsessReason }) => {
     const { subjectStore, purposeSubjectStore, teacherStore } = useContext(Context)
     const [formData, setFormData] = useState<Omit<IPurposeSubject, 'id'>>({
         type: 'full',
@@ -27,7 +28,7 @@ export const PurposeForm: FC<PurposeFormProps> = ({ academicSubject, closeModal,
 
     const teacher = teacherStore.teachers.find(t => t.id === academicSubject.teacherId)
 
-    const weekTypes = [
+    const weekTypes: { value: TypeSubject, type: string }[] = [
         { value: 'full', type: 'Все недели' },
         { value: 'even', type: 'Четная неделя' },
         { value: 'odd', type: 'Нечетная неделя' }
@@ -70,6 +71,7 @@ export const PurposeForm: FC<PurposeFormProps> = ({ academicSubject, closeModal,
                             key={i}
                             value={type.value}
                             item={type.type}
+                            disabled={!accessiblWeeks.includes(type.value)}
                         />
                     ))}
                 </RadioGroup>

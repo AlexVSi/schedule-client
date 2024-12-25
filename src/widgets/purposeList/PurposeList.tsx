@@ -31,6 +31,7 @@ export const PurposeList: FC<PurposeListProps> = ({
                             academicSubject={academicSubjectStore.groupAcademicSubjects.find(a => a.id === assigment.academicSubjectId)!}
                             classrooms={assigment.classrooms}
                             timeSlot={selectedTimeSlot}
+                            accessiblWeeks={assigment.accessTypes}
                             closeModal={() => closeModal(false)}
                         />)
                     }
@@ -48,6 +49,7 @@ export const PurposeList: FC<PurposeListProps> = ({
                             classrooms={[]}
                             timeSlot={selectedTimeSlot}
                             closeModal={() => closeModal(false)}
+                            accessiblWeeks={assigment.accessTypes}
                             notAccsessReason={assigment.notAccsessReason}
                         />
                     )}
