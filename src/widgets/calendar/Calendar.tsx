@@ -103,6 +103,14 @@ export const Calendar: FC<CalendarProps> = observer(({ group }) => {
                                                     <Plus className="w-6 h-6 text-blue-400 m-8" />
                                                 </div>
                                             )}
+
+                                            {(event[0]?.type !== 'full' || isSubgroup) && event.length === 1 && (
+                                                <div
+                                                    className="flex items-center justify-center h-full opacity-0 hover:opacity-100 transition-opacity"
+                                                >
+                                                    <Plus className="w-6 h-6 text-blue-400 m-8" />
+                                                </div>
+                                            )}
                                         </th>
                                     )
                                 })}
