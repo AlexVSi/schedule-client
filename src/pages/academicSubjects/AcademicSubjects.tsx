@@ -20,7 +20,7 @@ export const AcademicSubjects = observer(() => {
                 await academicSubjectStore.fetchAllByGroupAndSchedule(selectedGroup, scheduleStore.currentScheduleId)
             })()
         }
-    }, [selectedGroup])
+    }, [selectedGroup, scheduleStore.currentScheduleId])
 
     return (
         <>

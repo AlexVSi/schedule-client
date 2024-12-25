@@ -12,12 +12,22 @@ import { Context } from 'main';
 
 
 const App = () => {
-    const { authStore, specialityStore, teacherStore, classroomStore, groupStore, subjectStore, scheduleStore, timeSlotStore } = useContext(Context)
+    const { authStore, specialityStore, teacherStore, classroomStore, groupStore, subjectStore, scheduleStore, timeSlotStore,  } = useContext(Context)
 
     useEffect(() => {
-        if (localStorage.getItem('token')) {
-            authStore.checkAuth()
-        }
+        (async () => {
+            if (localStorage.getItem('token')) {
+                authStore.checkAuth()
+            }
+            const scheduleId = localStorage.getItem('scheduleId')
+            if (scheduleId) {
+                scheduleStore.setCurrentScheduleId(+scheduleId)
+                await timeSlotStore.fetchAllBySchedule(scheduleStore.currentScheduleId)
+            }
+        })()
+    }, [])
+
+    useEffect(() => {
         (async () => {
             await scheduleStore.fetchAllSchedules()
             await specialityStore.fetchAllSpecialities()
@@ -26,13 +36,11 @@ const App = () => {
             await classroomStore.fetchAllClassrooms()
             await groupStore.fetchAllGroups()
             await subjectStore.fetchAllsubjects()
-            const scheduleId = localStorage.getItem('scheduleId')
-            if (scheduleId) {
-                scheduleStore.setCurrentScheduleId(+scheduleId)
-                await timeSlotStore.fetchAllBySchedule(scheduleStore.currentScheduleId)
-            }
+            await timeSlotStore.fetchAllBySchedule(scheduleStore.currentScheduleId)
         })()
-    }, [groupStore.currentGroup])
+    }, [groupStore.currentGroup, authStore.isAuth, scheduleStore.currentScheduleId])
+
+
 
     return (
         <>

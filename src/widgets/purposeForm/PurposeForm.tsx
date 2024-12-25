@@ -36,6 +36,7 @@ export const PurposeForm: FC<PurposeFormProps> = ({ academicSubject, closeModal,
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         if (!formData.subjectId || (!formData.classroomId && !formData.isRemotely) || !formData.slotId) return
+        console.log('------------------------------------------------------------------------')
         try {
             purposeSubjectStore.add(formData)
             closeModal(true)
@@ -50,8 +51,8 @@ export const PurposeForm: FC<PurposeFormProps> = ({ academicSubject, closeModal,
 
     return (
         <form className='flex flex-col gap-1 justify-between border border-gray-200 rounded-xl p-5' onSubmit={handleSubmit}>
-            {notAccsessReason && <p>{notAccsessReason}</p>}
             <div className='flex flex-col gap-1'>
+                {notAccsessReason && <p className='text-red-400'>{notAccsessReason}</p>}
                 <p className='font-medium'>{subjectStore.subjects.find(s => s.id === academicSubject.name)?.name}</p>
                 <p>{`${teacher?.lastname} ${teacher?.firstname[0]}.${teacher?.surname[0]}.`}</p>
                 <p>Часов в неделю: {academicSubject.countHoursPerWeek}</p>

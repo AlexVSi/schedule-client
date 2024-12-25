@@ -25,7 +25,7 @@ export const Planner = observer(() => {
                 purposeSubjectStore.setGroupPurposeSubjects(purposes)
             })()
         }
-    }, [selectedGroup])
+    }, [selectedGroup, scheduleStore.currentScheduleId])
 
     useEffect(() => {
         (async () => {

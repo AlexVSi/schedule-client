@@ -1,6 +1,6 @@
 import { FC, useContext, useEffect, useState } from 'react'
 import { Loader, Plus } from 'lucide-react';
-import { IAcademicSubject, IAccessPurposeType, IClassroom, IGroup, IPurposeSubject, IScheduleConflict, ITimeSlot } from '@app/types/types';
+import { IAccessPurposeType, IGroup, IPurposeSubject, ITimeSlot } from '@app/types/types';
 import { observer } from 'mobx-react-lite';
 import { PurposeSubject } from '@entities/purposeSubject/ui/PurposeSubject';
 import { Context } from 'main';

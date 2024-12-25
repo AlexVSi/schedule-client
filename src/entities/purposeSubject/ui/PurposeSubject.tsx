@@ -4,12 +4,13 @@ import { IPurposeSubject, ITimeSlot } from '@app/types/types';
 import { Modal } from '@features/modal/Modal';
 import { ConfirmAction } from '@widgets/confirmAction/ConfirmAction';
 import { X } from 'lucide-react';
+import { observer } from 'mobx-react-lite';
 
 interface PurposeSubjectProps {
     purpose: IPurposeSubject
 }
 
-export const PurposeSubject: FC<PurposeSubjectProps> = ({ purpose }) => {
+export const PurposeSubject: FC<PurposeSubjectProps> = observer(({ purpose }) => {
     const { academicSubjectStore, subjectStore, teacherStore, classroomStore, timeSlotStore, purposeSubjectStore, authStore } = useContext(Context)
     const [removePurposeConfirmAction, setRemovePurposeConfirmAction] = useState<boolean>(false)
     const [timeSlot, setTimeSlot] = useState<ITimeSlot>()
@@ -81,4 +82,4 @@ export const PurposeSubject: FC<PurposeSubjectProps> = ({ purpose }) => {
             </Modal>
         </>
     )
-}
+})
