@@ -11,20 +11,21 @@ export const LoginForm: React.FC<LoginFormProps> = observer(({ closeModal }) => 
     const { authStore } = useContext(Context)
     const [login, setlogin] = useState('');
     const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
+    const [error, setError] = useState<boolean>(false);
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        setError('');
-        const success = authStore.login(login, password);
+        const success = await authStore.login(login, password);
         if (!success) {
-            setError('Неверный login или пароль');
+            setError(true);
+        } else {
+            closeModal(true)
         }
-        closeModal(true)
     };
 
     return (
-        <form action='' onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4">
+            {error && <div className="text-sm text-red-600">Неверный логин или пароль</div>}
             <div>
                 <label className="block text-sm font-medium text-gray-700">Логин</label>
                 <input
@@ -46,11 +47,6 @@ export const LoginForm: React.FC<LoginFormProps> = observer(({ closeModal }) => 
                     required
                 />
             </div>
-
-            {error && (
-                <div className="text-sm text-red-600">{error}</div>
-            )}
-
             <Button type="submit" className="w-full">
                 Войти
             </Button>
