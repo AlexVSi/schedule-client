@@ -13,7 +13,7 @@ import { observer } from 'mobx-react-lite';
 
 
 const App = observer(() => {
-    const { authStore, specialityStore, teacherStore, classroomStore, groupStore, subjectStore, scheduleStore, timeSlotStore,  } = useContext(Context)
+    const { authStore, specialityStore, teacherStore, classroomStore, groupStore, subjectStore, scheduleStore, timeSlotStore } = useContext(Context)
 
     useEffect(() => {
         (async () => {
@@ -38,9 +38,6 @@ const App = observer(() => {
             await groupStore.fetchAllGroups()
             await subjectStore.fetchAllsubjects()
             await timeSlotStore.fetchAllBySchedule(scheduleStore.currentScheduleId)
-            console.log('------------------------------------------')
-            console.log(scheduleStore.currentScheduleId)
-            console.log('------------------------------------------')
         })()
     }, [groupStore.currentGroup, authStore.isAuth, scheduleStore.currentScheduleId])
 

@@ -56,6 +56,7 @@ export default class ScheduleStore {
     async edit(body: Partial<ISchedule>) {
         try {
             await ScheduleService.edit(body)
+            this.fetchAllSchedules()
         } catch (e) {
             console.log(e);
         }
