@@ -1,4 +1,4 @@
-import React, { FC, useContext, useState } from 'react'
+import { useContext, useState } from 'react'
 import { Schedule } from '@entities/schedule/ui/Schedule'
 import { CardList } from '@features/cardList/CardList'
 import { ScheduleForm } from '@widgets/scheduleForm/ScheduleForm'
@@ -8,11 +8,8 @@ import { Button } from '@shared/ui/Button'
 import { Plus } from 'lucide-react'
 import { Modal } from '@features/modal/Modal'
 
-interface ScleduleModalProps {
 
-}
-
-export const ScheduleModal: FC<ScleduleModalProps> = observer(({ }) => {
+export const ScheduleModal = observer(() => {
     const { scheduleStore, authStore } = useContext(Context)
     const [teacherFormModal, setTeacherFormModal] = useState<boolean>(false)
 

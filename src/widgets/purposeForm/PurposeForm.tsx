@@ -36,7 +36,6 @@ export const PurposeForm: FC<PurposeFormProps> = ({ academicSubject, closeModal,
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         if (!formData.subjectId || (!formData.classroomId && !formData.isRemotely) || !formData.slotId) return
-        console.log('------------------------------------------------------------------------')
         try {
             purposeSubjectStore.add(formData)
             closeModal(true)

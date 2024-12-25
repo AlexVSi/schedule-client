@@ -48,13 +48,12 @@ export default class PurposeSubjectStore {
             this.addGroupPurposeSubject({...body, id: responce.data.id})
         } catch (e) {
             console.log(e);
-            console.log(body);
         }
     }
 
     async edit(body: Partial<IPurposeSubject>) {
         try {
-            const responce = await PurposeSubjectService.edit(body)
+            await PurposeSubjectService.edit(body)
         } catch (e) {
             console.log(e);
         }

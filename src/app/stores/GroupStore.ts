@@ -34,7 +34,6 @@ export default class GroupStore {
             this.fetchAllGroups()
         } catch (e) {
             console.log(e);
-            console.log(body);
         }
     }
 

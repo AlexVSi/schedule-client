@@ -29,7 +29,6 @@ export const BusyTimeForm: FC<BusyTimeFormProps> = ({ teacherId, onAdd }) => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        console.log(busyTime.startTime, busyTime.endTime)
         const responce = await teacherStore.addBusyTime(busyTime)
         onAdd({...busyTime, id: responce!})
     }

@@ -1,4 +1,4 @@
-import React, { FC, useContext, useEffect, useState } from 'react'
+import { FC, useContext, useEffect, useState } from 'react'
 import { Context } from 'main';
 import { IPurposeSubject, ITimeSlot } from '@app/types/types';
 import { Modal } from '@features/modal/Modal';
@@ -16,15 +16,13 @@ export const PurposeSubject: FC<PurposeSubjectProps> = observer(({ purpose }) =>
     const [timeSlot, setTimeSlot] = useState<ITimeSlot>()
 
     useEffect(() => {
-        fetchTimeSlot()
+        (async () => {
+            const response = await timeSlotStore.fetchTimeSlot(purpose.slotId)
+            if (response) {
+                setTimeSlot(response)
+            }
+        })()
     }, [])
-
-    async function fetchTimeSlot() {
-        const response = await timeSlotStore.fetchTimeSlot(purpose.slotId)
-        if (response) {
-            setTimeSlot(response)
-        }
-    }
 
     const academicSubject = academicSubjectStore.groupAcademicSubjects.find(a => a.id === purpose.subjectId);
     const subject = academicSubject ? subjectStore.subjects.find(s => s.id === academicSubject?.name) : null;

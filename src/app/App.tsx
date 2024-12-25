@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { Layout } from './layout';
 import { Planner } from '@pages/planner/Planner';
@@ -9,9 +9,10 @@ import { Subjects } from '@pages/subjects/Subjects';
 import { AcademicSubjects } from '@pages/academicSubjects/AcademicSubjects';
 import { Specialties } from '@pages/specialties/Specialties';
 import { Context } from 'main';
+import { observer } from 'mobx-react-lite';
 
 
-const App = () => {
+const App = observer(() => {
     const { authStore, specialityStore, teacherStore, classroomStore, groupStore, subjectStore, scheduleStore, timeSlotStore,  } = useContext(Context)
 
     useEffect(() => {
@@ -37,10 +38,11 @@ const App = () => {
             await groupStore.fetchAllGroups()
             await subjectStore.fetchAllsubjects()
             await timeSlotStore.fetchAllBySchedule(scheduleStore.currentScheduleId)
+            console.log('------------------------------------------')
+            console.log(scheduleStore.currentScheduleId)
+            console.log('------------------------------------------')
         })()
     }, [groupStore.currentGroup, authStore.isAuth, scheduleStore.currentScheduleId])
-
-
 
     return (
         <>
@@ -58,6 +60,6 @@ const App = () => {
             </Routes>
         </>
     )
-};
+});
 
 export default App;

@@ -47,7 +47,6 @@ export default class TimeSlotStore {
             await TimeSlotService.add(body)
         } catch (e) {
             console.log(e);
-            console.log(body);
         }
     }
 
