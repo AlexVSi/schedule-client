@@ -91,6 +91,8 @@ export async function checkScheduleConflicts(assigment: IAcademicSubject, timeSl
             purpose.accessTypes = []
             purpose.notAccsessReason = 'Для данного предмета учтено необходимое количество часов'
             return purpose
+        } else if (purpose.hours - hourCount === 1) {
+            purpose.accessTypes = purpose.accessTypes.filter(t => t !== 'full')
         }
     }
     return purpose;
