@@ -33,9 +33,9 @@ export const ScheduleForm: FC<ScheduleFormProps> = ({ schedule, closeModal }) =>
         } else {
             const id = await scheduleStore.add(formData)
             const names = await timeSlotStore.fetchTemplatesNames()
-            if (names) {
-                await timeSlotStore.initTemplate(names?.[0].name, id!)
-                await timeSlotStore.fetchAllBySchedule(id!)
+            if (names && id) {
+                await timeSlotStore.initTemplate(names?.[0].name, id)
+                await timeSlotStore.fetchAllBySchedule(id)
             }
         }
         setFormData({

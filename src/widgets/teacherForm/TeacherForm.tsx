@@ -77,7 +77,9 @@ export const TeacherForm: FC<TeacherFormProps> = observer(({ teacher, subjects, 
         } else {
             const id = await teacherStore.add(formData);
             for (let i of selectedSubjectList) {
-                await teacherStore.addSubject(id!, i)
+                if (id) {
+                    await teacherStore.addSubject(id, i)
+                }
             }
         }
         closeModal(false)

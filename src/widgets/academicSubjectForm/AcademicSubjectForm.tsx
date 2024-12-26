@@ -81,9 +81,11 @@ export const AcademicSubjectForm: FC<GroupFormProps> = ({ academicSubject, close
                 setIncorrect({...incorrect, classroomList: true})
                 return
             }
-            const academicSubjectId = await academicSubjectStore.add(formData);
+            const id = await academicSubjectStore.add(formData);
             for (let i of classroomList) {
-                await classroomStore.addSubject(i, academicSubjectId!)
+                if (id) {
+                    await classroomStore.addSubject(i, id)
+                }
             }
 
         }
