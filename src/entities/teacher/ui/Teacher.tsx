@@ -1,4 +1,4 @@
-import React, { FC, useContext, useEffect, useState } from 'react'
+import { FC, useContext, useEffect, useState } from 'react'
 import { Card } from '@features/card/Card'
 import { IBusyTime, ISubject, ITeacher } from '@app/types/types'
 import { CardListItem } from '@features/cardListItem/CardListItem'
@@ -26,7 +26,7 @@ export const Teacher: FC<TeacherProps> = observer(({ teacher }) => {
             const teacherBusyTimes = await teacherStore.fetchBusyTimesByTeacher(teacher.id)
             setBusyTimes(teacherBusyTimes)
         })()
-    }, [teacherFormModal])
+    }, [teacherStore.teachers])
 
     return (
         <>

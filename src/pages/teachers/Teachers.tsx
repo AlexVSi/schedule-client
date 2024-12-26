@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import { useContext, useState } from 'react';
 import { Plus } from 'lucide-react';
 import { observer } from 'mobx-react-lite';
 import { Button } from '@shared/ui/Button';
