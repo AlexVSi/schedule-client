@@ -53,7 +53,8 @@ export const Planner = observer(() => {
                     className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                 >
                     <option value="">Выберите группу</option>
-                    {groupStore.groups.map(group => (
+                    {groupStore.groups.slice().sort((a, b) => a.name.localeCompare(b.name, undefined, { sensitivity: 'base' }))
+                        .map(group => (
                         <option key={group.id} value={group.id}>
                             {group.name}
                         </option>
