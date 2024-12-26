@@ -33,8 +33,9 @@ export const PurposeList: FC<PurposeListProps> = ({
                             timeSlot={selectedTimeSlot}
                             accessiblWeeks={assigment.accessTypes}
                             closeModal={() => closeModal(false)}
-                        />)
-                    }
+                            isRemotely={assigment.isRemotely}
+                        />
+                    )}
                 )}
             </CardList>
             <h2 className='text-xl mt-3 mb-7'>Недоступные пары</h2>

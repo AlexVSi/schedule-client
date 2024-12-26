@@ -8,7 +8,7 @@ interface RadioProps {
     disabled?: boolean
 }
 
-export const RadioItem: FC<RadioProps> = ({ value, item, disabled = false}) => {
+export const RadioItem: FC<RadioProps> = ({ value, item, disabled = false }) => {
     return (
         <Radio
             value={!disabled && value}

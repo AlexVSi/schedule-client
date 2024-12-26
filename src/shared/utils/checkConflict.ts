@@ -22,10 +22,10 @@ export async function checkScheduleConflicts(assigment: IAcademicSubject, timeSl
                     timeSlot.startTime >= t.startTime && timeSlot.endTime >= t.endTime ||
                     timeSlot.startTime >= t.startTime && timeSlot.endTime <= t.endTime
                 if (flag) {
-                    purpose.isAccess = false
+                    // purpose.isAccess = false
                     purpose.isRemotely = true
                     purpose.notAccsessReason = `Преподаватель не может вести пары в это время`
-                    return purpose
+                    // return purpose
                 }
             }
         }

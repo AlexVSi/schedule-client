@@ -14,13 +14,14 @@ interface PurposeFormProps {
     closeModal: (flag: boolean) => void
     accessiblWeeks: TypeSubject[]
     notAccsessReason?: string
+    isRemotely?: boolean
 }
 
-export const PurposeForm: FC<PurposeFormProps> = ({ academicSubject, closeModal, classrooms, timeSlot, accessiblWeeks, notAccsessReason }) => {
+export const PurposeForm: FC<PurposeFormProps> = ({ academicSubject, closeModal, classrooms, timeSlot, accessiblWeeks, notAccsessReason, isRemotely = false }) => {
     const { subjectStore, purposeSubjectStore, teacherStore } = useContext(Context)
     const [formData, setFormData] = useState<Omit<IPurposeSubject, 'id'>>({
-        type: 'full',
-        isRemotely: false,
+        type: accessiblWeeks[0],
+        isRemotely: isRemotely,
         subjectId: academicSubject.id,
         classroomId: 0,
         slotId: timeSlot.id,
@@ -77,18 +78,15 @@ export const PurposeForm: FC<PurposeFormProps> = ({ academicSubject, closeModal,
                 </RadioGroup>
                 <p>Формат проведения</p>
                 <RadioGroup value={formData.isRemotely} onChange={(val) => setFormData({ ...formData, isRemotely: val })} aria-label="Server size" className="space-y-2">
-                    {[
-                        { value: false, format: 'Очно' },
-                        { value: true, format: 'Заочно' }
-                    ].map((v, i) => {
-                        return (
-                            <RadioItem
-                                key={i}
-                                value={v.value}
-                                item={v.format}
-                            />
-                        )
-                    })}
+                    <RadioItem
+                        value={false}
+                        item='Очно'
+                        disabled={isRemotely}
+                    />
+                    <RadioItem
+                        value={true}
+                        item='Заочно'
+                    />
                 </RadioGroup>
                 <div className="flex space-x-4 mt-2">
                     <Button
