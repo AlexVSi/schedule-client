@@ -38,7 +38,8 @@ export const Subjects = observer(() => {
                 <CardList>
                     {subjectStore.subjects.filter(s => 
                         s.name.toLowerCase().includes(searchTerm.toLowerCase())
-                    ).map(subject => {
+                    ).sort((a, b) => a.name.localeCompare(b.name, undefined, { sensitivity: 'base' }))
+                    .map(subject => {
                         return (
                             <Subject
                                 key={subject.id}

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import { useContext, useState } from 'react';
 import { Plus } from 'lucide-react';
 import { observer } from 'mobx-react-lite';
 import { Button } from '@shared/ui/Button';
@@ -26,7 +26,14 @@ export const Classrooms = observer(() => {
                     }
                 </div>
                 <CardList>
-                    {classroomStore.classrooms.map(classroom =>
+                    {classroomStore.classrooms.slice()
+                    .sort((a, b) => {
+                        if (+a.name && +b.name) {
+                            return +a.name - +b.name
+                        }
+                        return a.name.localeCompare(b.name, undefined, { sensitivity: 'base' })
+                    })
+                    .map(classroom =>
                         <Classroom
                             key={classroom.id}
                             classroom={classroom}

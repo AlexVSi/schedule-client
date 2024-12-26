@@ -40,7 +40,8 @@ export const Teachers = observer(() => {
                         t.lastname.toLowerCase().includes(searchTerm.toLowerCase()) ||
                         t.firstname.toLowerCase().includes(searchTerm.toLowerCase()) ||
                         t.surname.toLowerCase().includes(searchTerm.toLowerCase())
-                    ).map(teacher =>
+                    ).sort((a, b) => a.lastname.localeCompare(b.lastname, undefined, { sensitivity: 'base' }))
+                    .map(teacher =>
                         <Teacher
                             key={teacher.id}
                             teacher={teacher}
