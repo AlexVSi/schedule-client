@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import { useContext, useState } from 'react';
 import { Plus } from 'lucide-react';
 import { observer } from 'mobx-react-lite';
 import { Button } from '@shared/ui/Button';
@@ -11,6 +11,7 @@ import { Context } from 'main';
 export const Subjects = observer(() => {
     const { subjectStore, authStore } = useContext(Context)
     const [subjectFormModal, setSubjectFormModal] = useState<boolean>(false)
+    const [searchTerm, setSearchTerm] = useState<string>("");
 
     return (
         <>
@@ -25,15 +26,26 @@ export const Subjects = observer(() => {
                         </Button>
                     }
                 </div>
+                <div className="mb-4">
+                    <input
+                        type="text"
+                        placeholder="Поиск..."
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                </div>
                 <CardList>
-                    {subjectStore.subjects.map(subject => {
+                    {subjectStore.subjects.filter(s => 
+                        s.name.toLowerCase().includes(searchTerm.toLowerCase())
+                    ).map(subject => {
                         return (
                             <Subject
                                 key={subject.id}
                                 subject={subject}
                             />
-                        )
-                    })}
+                        )}
+                    )}
                 </CardList>
             </div>
             <Modal
