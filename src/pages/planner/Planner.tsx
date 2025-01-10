@@ -43,7 +43,7 @@ export const Planner = observer(() => {
     return (
         <>
             <div className="mb-6">
-                <h1 className="block text-xl font-medium text-gray-700 mb-8">Планнировщик</h1>
+                <h1 className="block text-xl font-medium text-gray-700 mb-8">Планировщик</h1>
                 <select
                     value={selectedGroup}
                     onChange={(e) => {

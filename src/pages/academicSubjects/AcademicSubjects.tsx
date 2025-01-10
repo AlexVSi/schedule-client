@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Plus } from 'lucide-react';
 import { observer } from 'mobx-react-lite';
 import { IGroup } from '@app/types/types';

@@ -3,7 +3,9 @@ import { IAcademicSubject, IGroup, ISchedule } from '@app/types/types';
 import AcademicSubjectService from '@entities/academicSubject/api/AcademicSubject.service';
 import PurposeSubjectService from '@entities/purposeSubject/api/PurposeSubject.service';
 
+
 export default class AcademicSubjectStore {
+
     groupAcademicSubjects = [] as IAcademicSubject[];
 
     constructor() {
@@ -12,6 +14,10 @@ export default class AcademicSubjectStore {
 
     setAcademicSubjects(groupAcademicSubjects: IAcademicSubject[]) {
         this.groupAcademicSubjects = groupAcademicSubjects
+    }
+
+    addGroupAcademicSubjects(academicSubject: IAcademicSubject) {
+        this.groupAcademicSubjects = [...this.groupAcademicSubjects, academicSubject]
     }
 
     async fetchAllAcademicSubjects() {
@@ -53,7 +59,7 @@ export default class AcademicSubjectStore {
     async add(body: Omit<IAcademicSubject, 'id'>) {
         try {
             const response = await AcademicSubjectService.add(body)
-            await this.fetchAllByGroupAndSchedule(body.groupId, body.schedulesId)
+            this.addGroupAcademicSubjects({ id: response.data.id, ...body })
             return response.data.id
         } catch (e) {
             console.log(e);

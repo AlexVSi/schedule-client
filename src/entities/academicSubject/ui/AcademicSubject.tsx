@@ -1,4 +1,4 @@
-import React, { FC, useContext, useEffect, useState } from 'react'
+import { FC, useContext, useEffect, useState } from 'react'
 import { IAcademicSubject, IClassroom } from '@app/types/types'
 import { Context } from 'main'
 import { Card } from '@features/card/Card'
@@ -35,7 +35,7 @@ export const AcademicSubject: FC<AcademicSubjectProps> = ({ academicSubject }) =
             const classrooms = await classroomStore.fetchByAcademicSubject(academicSubject.id)
             setClassrooms(classrooms)
         })()
-    }, [academicSubjectFormModal])
+    }, [academicSubjectStore.groupAcademicSubjects])
 
     return (
         <>
