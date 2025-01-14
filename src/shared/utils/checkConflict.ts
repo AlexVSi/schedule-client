@@ -16,12 +16,13 @@ export async function checkScheduleConflicts(assigment: IAcademicSubject, timeSl
 
     const busyTimes = await context.teacherStore.fetchBusyTimesByTeacher(assigment.teacherId)
     if (busyTimes) {
-        for (let t of busyTimes) {
-            if (timeSlot.dayOfWeek === t.dayOfWeek) {
+        for (let bt of busyTimes) {
+            if (timeSlot.dayOfWeek === bt.dayOfWeek) {
                 const flag =
-                    timeSlot.startTime <= t.startTime && timeSlot.endTime >= t.endTime ||
-                    timeSlot.startTime <= t.endTime && timeSlot.endTime >= t.endTime ||
-                    timeSlot.startTime <= t.startTime && timeSlot.endTime >= t.startTime
+                    timeSlot.startTime <= bt.startTime && bt.endTime <= timeSlot.endTime ||
+                    bt.startTime <= timeSlot.startTime && timeSlot.endTime <= bt.endTime ||
+                    timeSlot.startTime <= bt.startTime && bt.startTime <= timeSlot.endTime ||
+                    timeSlot.startTime <= bt.endTime && bt.endTime <= timeSlot.endTime
                 if (flag) {
                     purpose.isRemotely = true
                     purpose.notAccsessReason = `Преподаватель не может вести пары в это время`
