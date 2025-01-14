@@ -121,7 +121,7 @@ export const Calendar: FC<CalendarProps> = observer(({ group }) => {
             <Modal
                 isOpen={academicSubjectListModal}
                 onClose={() => setAcademicSubjectListModal(false)}
-                title={'Назначения'}
+                title={`${context.timeSlotStore.days.find(d => d.id === selectedTimeSlot?.dayOfWeek)}, ${selectedTimeSlot?.numberOfSubject} пара`}
                 size='big'
             >
                 {loader ?
