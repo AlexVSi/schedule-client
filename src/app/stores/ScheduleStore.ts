@@ -36,8 +36,9 @@ export default class ScheduleStore {
     async fetchOnlyPublic() {
         try {
             const responce = await ScheduleService.getOnlyPublic()
-            this.setSchedules(responce.data.schedule)
-            this.setCurrentScheduleId(responce.data.schedule[0].id)
+            if (responce.data.schedule.length > 0) {
+                this.setCurrentScheduleId(responce.data.schedule[0].id)
+            }
         } catch (e) {
             console.log(e);
         }

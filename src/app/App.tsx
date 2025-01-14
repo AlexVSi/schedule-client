@@ -31,6 +31,7 @@ const App = observer(() => {
     useEffect(() => {
         (async () => {
             await scheduleStore.fetchAllSchedules()
+            await scheduleStore.fetchOnlyPublic()
             await specialityStore.fetchAllSpecialities()
             await teacherStore.fetchAllTeachers()
             await classroomStore.fetchAllClassroomTypes()
