@@ -37,7 +37,7 @@ export default class ScheduleStore {
         try {
             const responce = await ScheduleService.getOnlyPublic()
             if (responce.data.schedule.length > 0) {
-                this.setCurrentScheduleId(responce.data.schedule[0].id)
+                this.setCurrentScheduleId(responce.data.schedule[responce.data.schedule.length - 1].id)
             }
         } catch (e) {
             console.log(e);
