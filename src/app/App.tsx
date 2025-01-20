@@ -20,6 +20,9 @@ const App = observer(() => {
             if (localStorage.getItem('token')) {
                 authStore.checkAuth()
             }
+            else {
+                await scheduleStore.fetchOnlyPublic()
+            }
             const scheduleId = localStorage.getItem('scheduleId')
             if (scheduleId) {
                 scheduleStore.setCurrentScheduleId(+scheduleId)
@@ -31,7 +34,6 @@ const App = observer(() => {
     useEffect(() => {
         (async () => {
             await scheduleStore.fetchAllSchedules()
-            await scheduleStore.fetchOnlyPublic()
             await specialityStore.fetchAllSpecialities()
             await teacherStore.fetchAllTeachers()
             await classroomStore.fetchAllClassroomTypes()
