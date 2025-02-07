@@ -9,3 +9,11 @@ services:
       - '3003:3003'
     stdin_open: true
     tty: true
+    networks:
+      net_con:
+        ipv4_address: 10.5.0.6
+
+networks:
+  net_con:
+    external:
+      name: "schedule-network"
