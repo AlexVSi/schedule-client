@@ -2,3 +2,4 @@ node_modules
 .gitignore
 .DS_Store
 dist
+.git

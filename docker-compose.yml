@@ -1,10 +1,13 @@
-version: '1'
+version: "1.1"
 services:
   schedule:
     build:
       context: .
       dockerfile: Dockerfile
     container_name: schedule-client
+    environment:
+      - VITE_API_URL: ${VITE_API_URL}
+      - VITE_AUTH_URL: ${VITE_AUTH_URL}
     ports:
       - '3003:3003'
     stdin_open: true
